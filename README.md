@@ -120,6 +120,24 @@ The dev server starts on `http://localhost:5173`. All `/api/*` requests are prox
 | GET | `/api/links/{shortCode}/analytics` | Get click analytics | 200 OK |
 | GET | `/{shortCode}` | Redirect to original URL | 302 Found / 410 Gone |
 
+## AI Tools Disclosure
+
+**Tools used:** Claude (Anthropic) — accessed via Claude Code CLI (`claude-sonnet-4-6`)
+
+**How AI was used in this solution:**
+
+- **Architecture & design:** Claude helped plan the overall structure of the application, including the separation between the Spring Boot backend and React frontend, and the URL shortening/redirect flow.
+
+- **Prompt engineering & subagent design:** Claude was used to write and refine the development prompts themselves — designing them as a sequence of focused, modular prompts intended for use with AI subagents. These prompts can be found in the [`prompts/archive/`](./prompts/archive/) folder, covering each phase of development from scaffolding through integration and documentation.
+
+- **Code generation:** Claude generated initial implementations for key components, including the backend controller logic, React component structure, and routing configuration.
+
+- **Debugging:** Claude assisted in diagnosing and resolving issues encountered during development, such as redirect behavior, routing edge cases, and build configuration problems.
+
+- **Documentation:** Claude helped draft code comments and written descriptions of the solution.
+
+All AI-generated code was reviewed, tested, and integrated by me. Final design decisions and verification of correctness remained my responsibility.
+
 ## Assumptions
 
 - **Single-user / trusted network only.** The API has no authentication or authorization. Anyone with network access can create, update, or delete any link. Do not expose it to the public internet without adding an auth layer.

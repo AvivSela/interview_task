@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LinkForm from './components/LinkForm';
 import LinksTable from './components/LinksTable';
 import AnalyticsPanel from './components/AnalyticsPanel';
+import LinkExpired from './components/LinkExpired';
 import { getLinks, deleteLink } from './api';
 
 export default function App() {
@@ -34,7 +36,7 @@ export default function App() {
     }
   };
 
-  return (
+  const dashboard = (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-blue-600 text-white px-6 py-4 shadow">
         <h1 className="text-2xl font-bold">URL Shortener</h1>
@@ -68,5 +70,14 @@ export default function App() {
         )}
       </main>
     </div>
+  );
+
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={dashboard} />
+        <Route path="/link-expired" element={<LinkExpired />} />
+      </Routes>
+    </BrowserRouter>
   );
 }

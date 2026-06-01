@@ -23,7 +23,7 @@ public class RedirectController {
                                           HttpServletRequest request) {
         ShortLink link = linkService.findByShortCode(shortCode);
         if (link == null || !link.isValid()) {
-            return ResponseEntity.status(HttpStatus.GONE).build();
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create("/link-expired")).build();
         }
         linkService.recordClick(shortCode);
         analyticsService.logClickAsync(
