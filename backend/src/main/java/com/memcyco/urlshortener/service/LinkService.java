@@ -33,8 +33,14 @@ public class LinkService {
         return repo.findAll();
     }
 
+    // Strips BOM, RTL/LTR marks, zero-width spaces, and regular whitespace from a URL string.
+    private static String sanitizeUrl(String url) {
+        return url == null ? null : url.replaceAll("^[\\s\\u200B-\\u200F\\uFEFF]+|[\\s\\u200B-\\u200F\\uFEFF]+$", "");
+    }
+
     @Transactional
     public ShortLink create(CreateLinkRequest req) {
+        String originalUrl = sanitizeUrl(req.originalUrl());
         String strategyName = req.strategy();
         StrategyType strategyType;
         try {
@@ -46,7 +52,7 @@ public class LinkService {
         }
 
         ShortLink partialEntity = ShortLink.builder()
-            .originalUrl(req.originalUrl())
+            .originalUrl(originalUrl)
             .strategy(strategyType.name())
             .maxClicks(req.maxClicks())
             .expiresAt(req.expiresAt())
@@ -65,7 +71,7 @@ public class LinkService {
         if (strategyType == StrategyType.SEQUENTIAL) {
             ShortLink saved = repo.saveAndFlush(partialEntity);
             String code = strategyRegistry.validateAndGenerate(
-                    strategyType, req.originalUrl(), saved.getId(), req.strategyParams());
+                    strategyType, originalUrl, saved.getId(), req.strategyParams());
             if (repo.findByShortCode(code).isPresent()) {
                 repo.delete(saved);
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Short code already taken: " + code);
@@ -75,7 +81,7 @@ public class LinkService {
         }
 
         String code = strategyRegistry.validateAndGenerate(
-                strategyType, req.originalUrl(), null, req.strategyParams());
+                strategyType, originalUrl, null, req.strategyParams());
         if (repo.findByShortCode(code).isPresent()) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Short code already taken: " + code);
         }
@@ -89,7 +95,7 @@ public class LinkService {
         ShortLink link = repo.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Link not found: " + id));
 
-        if (req.originalUrl() != null) link.setOriginalUrl(req.originalUrl());
+        if (req.originalUrl() != null) link.setOriginalUrl(sanitizeUrl(req.originalUrl()));
         if (req.isActive() != null) link.setActive(req.isActive());
         if (req.expiresAt() != null) link.setExpiresAt(req.expiresAt());
         if (req.tags() != null) link.setTags(req.tags());

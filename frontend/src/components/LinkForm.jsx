@@ -65,8 +65,11 @@ export default function LinkForm({ onCreated, editTarget, onUpdated, onCancel })
       const cleanParams = Object.fromEntries(
         Object.entries(strategyParams).filter(([, v]) => v !== undefined)
       );
+      // Strip invisible Unicode chars (BOM, RTL/LTR marks, zero-width spaces) that
+      // cause URI.create() to throw on the backend when copying from RTL sites.
+      const sanitizedUrl = originalUrl.replace(/^[\s\u200B-\u200F\uFEFF]+|[\s\u200B-\u200F\uFEFF]+$/g, '');
       const payload = {
-        originalUrl,
+        originalUrl: sanitizedUrl,
         tags: tags.trim() || undefined,
         maxClicks: maxClicks !== '' ? Number(maxClicks) : undefined,
         expiresAt: expiresAt ? new Date(expiresAt).toISOString().slice(0, 19) : undefined,
@@ -134,61 +137,68 @@ export default function LinkForm({ onCreated, editTarget, onUpdated, onCancel })
           <p className="text-xs text-gray-400">Strategy is fixed at creation and cannot be changed.</p>
         )}
 
-        {(strategySchemas[strategy] ?? []).map(param => {
-          const inputId = `strategy-param-${param.name}`;
-          return (
-            <div key={param.name}>
-              <label htmlFor={inputId} className="text-xs text-gray-500 block mb-1">
-                {param.description}
-                {param.required && <span className="text-red-500 ml-1" aria-hidden="true">*</span>}
-              </label>
+        {(strategySchemas[strategy] ?? []).length > 0 && (
+          <fieldset className="border border-blue-200 rounded-lg px-3 pt-2 pb-3 bg-blue-50">
+            <legend className="text-xs font-semibold text-blue-600 px-1">Strategy options</legend>
+            <div className="flex flex-col gap-3 mt-1">
+              {(strategySchemas[strategy] ?? []).map(param => {
+                const inputId = `strategy-param-${param.name}`;
+                return (
+                  <div key={param.name}>
+                    <label htmlFor={inputId} className="text-xs text-gray-500 block mb-1">
+                      {param.description}
+                      {param.required && <span className="text-red-500 ml-1" aria-hidden="true">*</span>}
+                    </label>
 
-              {param.type === 'integer' && (
-                <input
-                  id={inputId}
-                  type="number"
-                  placeholder={`default: ${param.defaultValue ?? 'none'}`}
-                  value={strategyParams[param.name] ?? ''}
-                  aria-required={param.required}
-                  onChange={e => setStrategyParam(
-                    param.name,
-                    e.target.value === '' ? undefined : Number(e.target.value)
-                  )}
-                  className="border rounded-lg px-3 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-              )}
+                    {param.type === 'integer' && (
+                      <input
+                        id={inputId}
+                        type="number"
+                        placeholder={`default: ${param.defaultValue ?? 'none'}`}
+                        value={strategyParams[param.name] ?? ''}
+                        aria-required={param.required}
+                        onChange={e => setStrategyParam(
+                          param.name,
+                          e.target.value === '' ? undefined : Number(e.target.value)
+                        )}
+                        className="border rounded-lg px-3 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+                      />
+                    )}
 
-              {param.type === 'string' && (
-                <input
-                  id={inputId}
-                  type="text"
-                  placeholder={param.defaultValue !== '' ? `default: ${param.defaultValue}` : 'optional'}
-                  value={strategyParams[param.name] ?? ''}
-                  aria-required={param.required}
-                  onChange={e => setStrategyParam(
-                    param.name,
-                    e.target.value === '' ? undefined : e.target.value
-                  )}
-                  className="border rounded-lg px-3 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-              )}
+                    {param.type === 'string' && (
+                      <input
+                        id={inputId}
+                        type="text"
+                        placeholder={param.defaultValue !== '' ? `default: ${param.defaultValue}` : 'optional'}
+                        value={strategyParams[param.name] ?? ''}
+                        aria-required={param.required}
+                        onChange={e => setStrategyParam(
+                          param.name,
+                          e.target.value === '' ? undefined : e.target.value
+                        )}
+                        className="border rounded-lg px-3 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+                      />
+                    )}
 
-              {param.type === 'boolean' && (
-                <input
-                  id={inputId}
-                  type="checkbox"
-                  checked={strategyParams[param.name] ?? false}
-                  aria-required={param.required}
-                  onChange={e => setStrategyParam(param.name, e.target.checked)}
-                />
-              )}
+                    {param.type === 'boolean' && (
+                      <input
+                        id={inputId}
+                        type="checkbox"
+                        checked={strategyParams[param.name] ?? false}
+                        aria-required={param.required}
+                        onChange={e => setStrategyParam(param.name, e.target.checked)}
+                      />
+                    )}
 
-              {!['integer', 'string', 'boolean'].includes(param.type) && (
-                <p className="text-xs text-yellow-600">Unsupported param type: {param.type}</p>
-              )}
+                    {!['integer', 'string', 'boolean'].includes(param.type) && (
+                      <p className="text-xs text-yellow-600">Unsupported param type: {param.type}</p>
+                    )}
+                  </div>
+                );
+              })}
             </div>
-          );
-        })}
+          </fieldset>
+        )}
 
         <input
           type="text"
