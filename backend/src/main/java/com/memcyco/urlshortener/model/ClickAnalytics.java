@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 @Entity
 @Table(name = "click_analytics")
@@ -30,6 +32,17 @@ public class ClickAnalytics {
 
     @Column(length = 45)
     private String ipAddress;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    @Builder.Default
+    private GeoStatus geoStatus = GeoStatus.PENDING;
+
+    @Column(length = 100)
+    private String country;
+
+    @Column(length = 100)
+    private String city;
 
     @PrePersist
     protected void onCreate() {
