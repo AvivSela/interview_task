@@ -14,11 +14,29 @@ public interface ClickAnalyticsRepository extends JpaRepository<ClickAnalytics, 
     @Query("SELECT CAST(c.clickedAt AS date) as date, COUNT(c) as count FROM ClickAnalytics c WHERE c.shortCode = :shortCode GROUP BY CAST(c.clickedAt AS date) ORDER BY CAST(c.clickedAt AS date)")
     List<Object[]> countClicksByDay(@Param("shortCode") String shortCode);
 
-    @Query("SELECT c.referer, COUNT(c) as count FROM ClickAnalytics c WHERE c.shortCode = :shortCode AND c.referer IS NOT NULL GROUP BY c.referer ORDER BY count DESC")
-    List<Object[]> topReferrers(@Param("shortCode") String shortCode);
+    @Query(value = """
+            SELECT referer, COUNT(*) AS count
+            FROM click_analytics
+            WHERE short_code = :shortCode
+              AND referer IS NOT NULL
+            GROUP BY referer
+            ORDER BY count DESC
+            LIMIT :limit
+            """, nativeQuery = true)
+    List<Object[]> topReferrers(@Param("shortCode") String shortCode,
+                                 @Param("limit") int limit);
 
-    @Query("SELECT c.userAgent, COUNT(c) as count FROM ClickAnalytics c WHERE c.shortCode = :shortCode AND c.userAgent IS NOT NULL GROUP BY c.userAgent ORDER BY count DESC")
-    List<Object[]> topUserAgents(@Param("shortCode") String shortCode);
+    @Query(value = """
+            SELECT user_agent, COUNT(*) AS count
+            FROM click_analytics
+            WHERE short_code = :shortCode
+              AND user_agent IS NOT NULL
+            GROUP BY user_agent
+            ORDER BY count DESC
+            LIMIT :limit
+            """, nativeQuery = true)
+    List<Object[]> topUserAgents(@Param("shortCode") String shortCode,
+                                  @Param("limit") int limit);
 
     @Query(value = """
             SELECT country, COUNT(*) AS clicks

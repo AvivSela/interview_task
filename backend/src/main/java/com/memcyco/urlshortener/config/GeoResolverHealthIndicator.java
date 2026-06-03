@@ -19,8 +19,8 @@ public class GeoResolverHealthIndicator implements HealthIndicator {
     @Override
     public Health health() {
         if (reader == null) {
-            return Health.down()
-                    .withDetail("reason", "MaxMind DB not loaded — geo resolution disabled")
+            return Health.status("DEGRADED")
+                    .withDetail("reason", "MaxMind DB not configured — geo resolution disabled")
                     .build();
         }
         return Health.up().build();

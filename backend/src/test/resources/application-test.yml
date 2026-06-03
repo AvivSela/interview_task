@@ -11,3 +11,8 @@ spring:
     show-sql: false
   cache:
     type: caffeine
+
+management:
+  endpoint:
+    health:
+      show-details: always

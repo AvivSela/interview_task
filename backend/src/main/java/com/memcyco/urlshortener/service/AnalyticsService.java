@@ -47,7 +47,7 @@ public class AnalyticsService {
             ))
             .toList();
 
-        List<AnalyticsResponse.ReferrerCount> topReferrers = clickRepo.topReferrers(shortCode)
+        List<AnalyticsResponse.ReferrerCount> topReferrers = clickRepo.topReferrers(shortCode, 10)
             .stream()
             .map(row -> new AnalyticsResponse.ReferrerCount(
                 row[0] != null ? row[0].toString() : "",
@@ -55,7 +55,7 @@ public class AnalyticsService {
             ))
             .toList();
 
-        List<AnalyticsResponse.AgentCount> topUserAgents = clickRepo.topUserAgents(shortCode)
+        List<AnalyticsResponse.AgentCount> topUserAgents = clickRepo.topUserAgents(shortCode, 10)
             .stream()
             .map(row -> new AnalyticsResponse.AgentCount(
                 row[0] != null ? row[0].toString() : "",

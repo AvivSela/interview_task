@@ -28,6 +28,6 @@ class GeoDisabledIntegrationTest {
     void healthShowsGeoResolverDown() {
         ResponseEntity<String> res = rest.getForEntity("/actuator/health", String.class);
         assertThat(res.getBody()).contains("\"geoResolver\"");
-        assertThat(res.getBody()).contains("\"status\":\"DOWN\"");
+        assertThat(res.getBody()).contains("\"status\":\"DEGRADED\"");
     }
 }
