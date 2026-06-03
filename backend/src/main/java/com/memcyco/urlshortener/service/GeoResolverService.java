@@ -3,6 +3,7 @@ package com.memcyco.urlshortener.service;
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.AddressNotFoundException;
 import com.memcyco.urlshortener.dto.GeoResult;
+import com.memcyco.urlshortener.util.IpUtils;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,7 @@ public class GeoResolverService {
         }
         try {
             InetAddress addr = InetAddress.getByName(ip);
-            if (addr.isLoopbackAddress() || addr.isSiteLocalAddress() || addr.isLinkLocalAddress()) {
+            if (IpUtils.isPrivateAddress(addr)) {
                 return GeoResult.private_();
             }
             var response = reader.city(addr);

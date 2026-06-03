@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.memcyco.urlshortener.util.IpUtils;
 import java.net.InetAddress;
 import java.net.URI;
 
@@ -52,7 +53,7 @@ public class RedirectController {
                 String candidate = parts[i].trim();
                 try {
                     InetAddress addr = InetAddress.getByName(candidate);
-                    if (!addr.isSiteLocalAddress() && !addr.isLoopbackAddress() && !addr.isLinkLocalAddress()) {
+                    if (!IpUtils.isPrivateAddress(addr)) {
                         return candidate;
                     }
                 } catch (Exception ignored) {}
