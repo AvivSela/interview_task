@@ -1,3 +1,6 @@
+import { useState, useRef } from 'react';
+import QrPopover from './QrPopover';
+
 function TagBadge({ tag, active, onClick }) {
   return (
     <button
@@ -14,6 +17,9 @@ function TagBadge({ tag, active, onClick }) {
 }
 
 export default function LinksTable({ links, onEdit, onDelete, onViewStats, tagFilter, onTagFilter }) {
+  const [openQr, setOpenQr] = useState(null);
+  const qrRefs = useRef({});
+
   const parseTags = (raw) =>
     raw ? raw.split(',').map((t) => t.trim()).filter(Boolean) : [];
 
@@ -51,7 +57,12 @@ export default function LinksTable({ links, onEdit, onDelete, onViewStats, tagFi
             </tr>
           </thead>
           <tbody>
-            {filtered.map((link) => (
+            {filtered.map((link) => {
+              if (!qrRefs.current[link.id]) {
+                qrRefs.current[link.id] = { current: null };
+              }
+              const qrRef = qrRefs.current[link.id];
+              return (
               <tr key={link.id} className="border-b last:border-0 hover:bg-gray-50">
                 <td className="py-2 font-mono text-blue-600">
                   <a href={`/api/r/${link.shortCode}`} target="_blank" rel="noreferrer">
@@ -92,12 +103,27 @@ export default function LinksTable({ links, onEdit, onDelete, onViewStats, tagFi
                     >
                       Delete
                     </button>
+                    <button
+                      ref={(el) => { qrRef.current = el; }}
+                      onClick={() => setOpenQr({ shortCode: link.shortCode, triggerRef: qrRef })}
+                      className="text-xs text-gray-500 hover:underline"
+                    >
+                      QR
+                    </button>
                   </div>
                 </td>
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
+      )}
+      {openQr && (
+        <QrPopover
+          url={`${window.location.origin}/api/r/${openQr.shortCode}`}
+          onClose={() => setOpenQr(null)}
+          triggerRef={openQr.triggerRef}
+        />
       )}
     </div>
   );
