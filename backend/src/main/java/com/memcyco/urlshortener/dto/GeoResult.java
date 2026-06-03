@@ -20,7 +20,11 @@ public record GeoResult(
         return new GeoResult(GeoStatus.ERROR, null, null);
     }
 
-    public static GeoResult resolved(String country, String city) {
+    public static GeoResult disabled() {
+        return new GeoResult(GeoStatus.DISABLED, null, null);
+    }
+
+    public static GeoResult resolved(@Nullable String country, @Nullable String city) {
         return new GeoResult(GeoStatus.RESOLVED, country, city);
     }
 }

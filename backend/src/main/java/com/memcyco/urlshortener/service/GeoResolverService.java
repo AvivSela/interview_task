@@ -2,8 +2,6 @@ package com.memcyco.urlshortener.service;
 
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.AddressNotFoundException;
-import com.maxmind.geoip2.record.City;
-import com.maxmind.geoip2.record.Country;
 import com.memcyco.urlshortener.dto.GeoResult;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -24,7 +22,7 @@ public class GeoResolverService {
 
     public GeoResult resolve(String ip) {
         if (reader == null) {
-            return GeoResult.error();
+            return GeoResult.disabled();
         }
         try {
             InetAddress addr = InetAddress.getByName(ip);
@@ -32,12 +30,11 @@ public class GeoResolverService {
                 return GeoResult.private_();
             }
             var response = reader.city(addr);
-            Country country = response.getCountry();
-            City city = response.getCity();
-            return GeoResult.resolved(
-                    country.getName(),
-                    city.getName()
-            );
+            String countryName = response.getCountry().getName();
+            if (countryName == null) {
+                return GeoResult.notFound();
+            }
+            return GeoResult.resolved(countryName, response.getCity().getName());
         } catch (AddressNotFoundException e) {
             return GeoResult.notFound();
         } catch (Exception e) {

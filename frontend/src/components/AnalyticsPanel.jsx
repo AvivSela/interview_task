@@ -37,15 +37,15 @@ export default function AnalyticsPanel({ shortCode, onClose }) {
             Total clicks: <span className="font-semibold text-gray-800">{data.totalClicks}</span>
           </p>
 
-          {data.clicksByDay?.length > 0 && (
+          {data.clicksOverTime?.length > 0 && (
             <>
               <h3 className="text-sm font-medium text-gray-600">Clicks over time</h3>
               <ResponsiveContainer width="100%" height={200}>
-                <BarChart data={data.clicksByDay}>
+                <BarChart data={data.clicksOverTime}>
                   <XAxis dataKey="date" tick={{ fontSize: 11 }} />
                   <YAxis allowDecimals={false} tick={{ fontSize: 11 }} />
                   <Tooltip />
-                  <Bar dataKey="clicks" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="count" fill="#3b82f6" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </>

@@ -12,13 +12,12 @@ spring:
   cache:
     type: caffeine
   flyway:
-    baseline-on-migrate: true
-    baseline-version: 1
+    baseline-on-migrate: false
 
 server:
   port: 8080
   error:
-    include-message: always
+    include-message: never
 
 logging:
   level:
@@ -32,7 +31,7 @@ management:
         include: health
   endpoint:
     health:
-      show-details: always
+      show-details: when-authorized
 
 geo:
   db:
