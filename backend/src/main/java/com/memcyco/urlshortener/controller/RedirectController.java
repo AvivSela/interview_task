@@ -3,6 +3,10 @@ package com.memcyco.urlshortener.controller;
 import com.memcyco.urlshortener.model.ShortLink;
 import com.memcyco.urlshortener.service.AnalyticsService;
 import com.memcyco.urlshortener.service.LinkService;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +17,7 @@ import com.memcyco.urlshortener.util.IpUtils;
 import java.net.InetAddress;
 import java.net.URI;
 
+@Tag(name = "Redirect", description = "Follow a short link to its original URL")
 @RestController
 @RequiredArgsConstructor
 public class RedirectController {
@@ -20,9 +25,22 @@ public class RedirectController {
     private final LinkService linkService;
     private final AnalyticsService analyticsService;
 
-    @GetMapping({"/api/r/{shortCode}", "/{shortCode}"})
+    @Operation(summary = "Redirect to original URL")
+    @ApiResponse(responseCode = "302", description = "Redirects to the original URL, or to /link-expired if the link is invalid, expired, or has reached its click limit")
+    @GetMapping("/api/r/{shortCode}")
     public ResponseEntity<Void> redirect(@PathVariable String shortCode,
                                           HttpServletRequest request) {
+        return doRedirect(shortCode, request);
+    }
+
+    @Hidden
+    @GetMapping("/{shortCode}")
+    public ResponseEntity<Void> redirectFromRoot(@PathVariable String shortCode,
+                                                  HttpServletRequest request) {
+        return doRedirect(shortCode, request);
+    }
+
+    private ResponseEntity<Void> doRedirect(String shortCode, HttpServletRequest request) {
         ShortLink link = linkService.findByShortCode(shortCode);
         if (link == null || !link.isValid()) {
             return ResponseEntity.status(HttpStatus.FOUND)

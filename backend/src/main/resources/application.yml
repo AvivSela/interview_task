@@ -40,3 +40,13 @@ management:
 geo:
   db:
     path: ${GEO_DB_PATH:}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tags-sorter: alpha
+  show-actuator: false
+  paths-to-exclude: /actuator/**

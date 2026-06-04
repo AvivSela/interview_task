@@ -73,6 +73,17 @@ docker-compose up --build backend
 
 These are set in `docker-compose.yml` and injected into the backend at runtime. Change them there if needed — no other files need updating when running via Docker.
 
+## API Documentation
+
+The REST API ships with an interactive Swagger UI generated automatically from the code.
+
+| Environment | URL |
+|-------------|-----|
+| Docker | [http://localhost/swagger-ui.html](http://localhost/swagger-ui.html) |
+| Local dev | [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) |
+
+The raw OpenAPI spec (JSON) is available at `/v3/api-docs`. For a full endpoint table and a curl example see [API Reference](#api-reference) below.
+
 ## Local Development (without Docker)
 
 Use this when you want hot-reload for the backend or frontend without rebuilding images.
@@ -129,6 +140,8 @@ The dev server starts on `http://localhost:5173`. All `/api/*` requests are prox
 
 ## API Reference
 
+Interactive Swagger UI: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) (local dev) · [http://localhost/swagger-ui.html](http://localhost/swagger-ui.html) (Docker)
+
 | Method | Path | Description | Response |
 |--------|------|-------------|----------|
 | POST | `/api/links` | Create a short link | 201 Created |
@@ -136,7 +149,32 @@ The dev server starts on `http://localhost:5173`. All `/api/*` requests are prox
 | PUT | `/api/links/{id}` | Update a short link | 200 OK |
 | DELETE | `/api/links/{id}` | Delete a short link | 204 No Content |
 | GET | `/api/links/{shortCode}/analytics` | Get click analytics | 200 OK |
-| GET | `/{shortCode}` | Redirect to original URL | 302 Found / 410 Gone |
+| GET | `/api/r/{shortCode}` | Redirect to original URL | 302 Found |
+
+### Example: create a short link
+
+```bash
+curl -X POST http://localhost:8080/api/links \
+  -H "Content-Type: application/json" \
+  -d '{"originalUrl": "https://example.com", "strategy": "RANDOM_BASE62"}'
+```
+
+```json
+{
+  "id": 1,
+  "shortCode": "aB3xY7",
+  "originalUrl": "https://example.com",
+  "strategy": "RANDOM_BASE62",
+  "isActive": true,
+  "maxClicks": null,
+  "totalClicks": 0,
+  "expiresAt": null,
+  "tags": null,
+  "createdAt": "2026-06-04T10:00:00"
+}
+```
+
+Visit `http://localhost:8080/api/r/aB3xY7` (or `http://localhost/aB3xY7` via Docker) to follow the redirect.
 
 ## AI Tools Disclosure
 
