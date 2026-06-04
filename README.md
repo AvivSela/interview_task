@@ -2,6 +2,22 @@
 
 A full-stack URL shortener with click analytics. Create short links, set expiry dates and click limits, and track usage with time-series charts. Built with Spring Boot, React, and PostgreSQL.
 
+## Features
+
+- **Short link creation** — paste any URL and get a short code instantly; optionally supply your own custom slug
+- **Three code strategies** — random Base62 (default), URL-derived hash, or sequential counter; each is configurable per link
+- **Tags** — label links with comma-separated tags and filter the dashboard by tag
+- **Click limits** — set a max-click cap; the link stops working automatically once it is reached
+- **Expiry dates** — schedule a link to stop working at a specific date and time
+- **Activate / deactivate** — disable a link at any time without deleting it, then re-enable it later
+- **Click analytics** — per-link total click count and a day-by-day bar chart
+- **Geo analytics** — top countries and cities breakdown (requires optional server-side setup)
+- **QR codes** — generate a scannable QR code for any short link directly in the dashboard
+
+For a full description of each feature see [docs/features.md](docs/features.md).
+
+---
+
 ## Services
 
 | Service | Image / Build | Port | Description |
