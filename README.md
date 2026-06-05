@@ -113,7 +113,7 @@ SPRING_DATASOURCE_PASSWORD=password \
 mvn spring-boot:run
 ```
 
-Hibernate auto-creates and migrates the schema on startup (`ddl-auto: update`).
+Flyway manages the schema on startup (`ddl-auto: validate`). Migrations live in `backend/src/main/resources/db/migration/`.
 
 ### 3. Start the frontend
 
@@ -125,6 +125,29 @@ npm run dev
 
 The dev server starts on `http://localhost:5173`. All `/api/*` requests are proxied to `http://localhost:8080` via Vite's proxy (configured in `vite.config.js`), so no CORS setup is needed.
 
+### 4. Optional: Enable geo analytics
+
+The analytics panel can show top countries and cities if a MaxMind GeoLite2 database is available. To enable it:
+
+1. Follow the setup instructions in the [`geo/`](./geo/) directory to download the `GeoLite2-City.mmdb` file.
+2. Set the `GEO_DB_PATH` environment variable to its absolute path when starting the backend:
+
+```bash
+GEO_DB_PATH=/absolute/path/to/GeoLite2-City.mmdb mvn spring-boot:run
+```
+
+Without this variable the backend starts normally; geo columns are simply absent from analytics responses.
+
+## Running Tests
+
+```bash
+# Backend (uses an in-memory H2 database — no running Postgres required)
+cd backend && mvn test
+
+# Frontend
+cd frontend && npx vitest run
+```
+
 ## API Reference
 
 | Method | Path | Description | Response |
@@ -134,7 +157,7 @@ The dev server starts on `http://localhost:5173`. All `/api/*` requests are prox
 | PUT | `/api/links/{id}` | Update a short link | 200 OK |
 | DELETE | `/api/links/{id}` | Delete a short link | 204 No Content |
 | GET | `/api/links/{shortCode}/analytics` | Get click analytics | 200 OK |
-| GET | `/{shortCode}` | Redirect to original URL | 302 Found / 410 Gone |
+| GET | `/{shortCode}` | Redirect to original URL | 302 Found (to original URL, `/link-expired`, or `/not-found`) |
 
 ## AI Tools Disclosure
 
@@ -207,8 +230,14 @@ Short links are cached in Caffeine with a 10-minute TTL and a maximum of 10 000 
 
 ### Validity check in the entity
 
-`ShortLink.isValid()` centralizes the three validity conditions — active flag, expiry date, max-click limit — in the entity. The redirect controller calls this single method and returns `410 Gone` on failure. `410` is used instead of `404` to signal that the resource existed but is intentionally unavailable.
+`ShortLink.isValid()` centralizes the three validity conditions — active flag, expiry date, max-click limit — in the entity. The redirect controller calls this single method; invalid links redirect to `/link-expired` and unknown codes redirect to `/not-found` (both are frontend routes), rather than returning HTTP error codes directly.
 
 ### Schema management
 
-`ddl-auto: update` lets Hibernate manage the schema directly from entity definitions. No migration files are required at this scale, and the schema is fully reconstructible from the Java model classes.
+Flyway manages database migrations. Migration files live in `backend/src/main/resources/db/migration/`:
+
+- `V1__baseline.sql` — initial schema
+- `V2__geo_analytics.sql` — adds geo columns to `click_analytics`
+- `V3__remove_pending_geo_status.sql` — cleans up an intermediate geo status value
+
+`ddl-auto: validate` ensures that Hibernate entities match the migrated schema on startup.

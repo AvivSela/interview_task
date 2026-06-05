@@ -51,11 +51,11 @@ npx vitest run src/components/LinksTable.test.jsx  # run a single test file
 - **Cache eviction on every click:** `totalClicks` lives on the cached `ShortLink` entity; `@CacheEvict` after each `recordClick` ensures max-click limits are enforced on the next lookup.
 - **SEQUENTIAL strategy two-phase save:** `saveAndFlush` to get the DB-assigned ID, encode it to Base62, then save again. Conflict on second save → delete partial row, return `409`.
 - **Geo resolution is optional:** `GeoConfig` emits a null `DatabaseReader` bean when `geo.db.path` is unset or missing. `GeoResolverService.isEnabled()` gates geo columns in analytics responses. Set `GEO_DB_PATH` env var (or `geo.db.path` in yml) to a MaxMind `GeoLite2-City.mmdb` file path to enable it.
-- **Schema managed by Flyway:** migrations live in `backend/src/main/resources/db/migration/`. `ddl-auto: validate` in production (schema must match entities); `create-drop` in tests (H2).
+- **Schema managed by Flyway:** migrations live in `backend/src/main/resources/db/migration/` (`V1__baseline.sql`, `V2__geo_analytics.sql`, `V3__remove_pending_geo_status.sql`). `ddl-auto: validate` in production (schema must match entities); `create-drop` in tests (H2).
 - **IP extraction:** `RedirectController.extractClientIp` reads `X-Real-IP` first, then walks `X-Forwarded-For` rightmost-to-leftmost skipping private addresses. Falls back to `request.getRemoteAddr()`.
 
 ### Frontend
-Single-page app with one real route (`/`) and one fallback route (`/link-expired`). State lives in `App.jsx`: links list, current edit target, active analytics short code, and tag filter. `api.js` is an axios instance; all calls go through it. `AnalyticsPanel` is rendered inline below the table when a short code is selected — it is not a modal.
+Single-page app with one real route (`/`) and two error routes (`/link-expired`, `/not-found`). State lives in `App.jsx`: links list, current edit target, active analytics short code, and tag filter. `api.js` is an axios instance; all calls go through it. `AnalyticsPanel` is rendered inline below the table when a short code is selected — it is not a modal.
 
 ### Geo feature
 The `geo/` directory at the project root contains documentation and scripts for setting up the MaxMind database. The test suite includes a real (sample) `GeoLite2-City-Test.mmdb` at `backend/src/test/resources/` used by `GeoAnalyticsIntegrationTest` and `GeoResolverServiceTest`. The `application-dev.yml` profile points to this test database for local development with geo enabled.

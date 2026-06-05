@@ -63,7 +63,7 @@ All your short links appear in the **Your Links** table. From there you can:
 
 - **Filter by tag** — click any tag badge to show only links that carry that tag. Click the "Clear filter" button to go back to the full list.
 - **Copy the short URL** — click the short code in the table; it opens in a new tab so you can copy it from the address bar.
-- **View a QR code** — click **QR** on any row to see a scannable QR code for that link.
+- **View a QR code** — click **QR** on any row to see a scannable QR code for that link. Inside the popover, click **Copy SVG** to copy the QR image as raw SVG markup to your clipboard.
 - **Edit** — click **Edit** to change the destination URL, tags, click cap, expiry date, or active status. The short code and strategy cannot be changed after creation.
 - **Deactivate / reactivate** — in the edit form, toggle the Active switch off to make a link stop working immediately (without deleting it), or back on to restore it.
 - **Delete** — click **Delete** to permanently remove a link and all its recorded click history.
@@ -76,6 +76,8 @@ Click **Stats** on any row to open the analytics panel for that link. It shows:
 
 - **Total clicks** — the running lifetime count of times the short link has been followed.
 - **Clicks over time** — a bar chart with one bar per day, so you can see spikes and trends at a glance.
+- **Top referrers** — a ranked list of the HTTP `Referer` header values (i.e. the pages that linked to your short URL), by click count.
+- **Top user agents** — a ranked list of browser/client identifiers, by click count. Useful for understanding which devices or bots are hitting your links.
 
 The panel slides open below the table and stays open until you close it with the **×** button in the corner.
 
@@ -101,3 +103,16 @@ A link can stop working for any of three reasons:
 3. **It hit its click cap.** Once the "Max clicks" limit is reached, the very next visitor will see the expired page. The counter is checked on every visit, so the limit is enforced accurately.
 
 In all three cases the visitor is shown a **Link expired** page rather than a generic browser error. This page is part of the app, so it can be styled to match your brand. The link itself and its click history are not deleted — they remain in your list so you can reactivate or inspect them.
+
+---
+
+## Error pages
+
+The app has two dedicated error pages:
+
+| Page | URL | When it appears |
+|------|-----|-----------------|
+| **Not Found** | `/not-found` | The short code has never existed in the system — the URL was mistyped or the link was deleted. |
+| **Link Expired** | `/link-expired` | The short code exists but is no longer active — it was manually deactivated, its expiry date has passed, or it has reached its click cap. |
+
+Both pages are served by the React frontend. They can be reached directly by navigating to their URLs, and they are also shown automatically when a visitor follows a broken or expired short link.
