@@ -4,10 +4,10 @@
 You are building an **analytics-driven URL shortener**.
 The following entity classes already exist:
 
-**`backend/src/main/java/com/memcyco/urlshortener/model/ShortLink.java`**
+**`backend/src/main/java/com/avivly/urlshortener/model/ShortLink.java`**
 - Fields: `id` (Long), `shortCode` (String), `originalUrl` (String), `strategy`, `isActive`, `maxClicks`, `totalClicks`, `expiresAt`, `tags`, `createdAt`
 
-**`backend/src/main/java/com/memcyco/urlshortener/model/ClickAnalytics.java`**
+**`backend/src/main/java/com/avivly/urlshortener/model/ClickAnalytics.java`**
 - Fields: `id` (Long), `shortCode` (String), `clickedAt` (LocalDateTime), `referer`, `userAgent`, `ipAddress`
 
 ## Your Task
@@ -15,11 +15,11 @@ Create the two Spring Data JPA repository interfaces.
 
 ## Files to Create
 
-### `backend/src/main/java/com/memcyco/urlshortener/repository/ShortLinkRepository.java`
+### `backend/src/main/java/com/avivly/urlshortener/repository/ShortLinkRepository.java`
 ```java
-package com.memcyco.urlshortener.repository;
+package com.avivly.urlshortener.repository;
 
-import com.memcyco.urlshortener.model.ShortLink;
+import com.avivly.urlshortener.model.ShortLink;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -37,11 +37,11 @@ public interface ShortLinkRepository extends JpaRepository<ShortLink, Long> {
 }
 ```
 
-### `backend/src/main/java/com/memcyco/urlshortener/repository/ClickAnalyticsRepository.java`
+### `backend/src/main/java/com/avivly/urlshortener/repository/ClickAnalyticsRepository.java`
 ```java
-package com.memcyco.urlshortener.repository;
+package com.avivly.urlshortener.repository;
 
-import com.memcyco.urlshortener.model.ClickAnalytics;
+import com.avivly.urlshortener.model.ClickAnalytics;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

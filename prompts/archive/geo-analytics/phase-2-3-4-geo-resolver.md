@@ -2,7 +2,7 @@
 
 ## Context
 
-Spring Boot URL shortener at `backend/`. Package: `com.memcyco.urlshortener`.
+Spring Boot URL shortener at `backend/`. Package: `com.avivly.urlshortener`.
 Tasks 2.3 and 2.4 are independent new files — run them with two parallel subagents.
 
 **Prerequisites:**
@@ -18,13 +18,13 @@ Tasks 2.3 and 2.4 are independent new files — run them with two parallel subag
 
 #### Step 1 — Write the test first
 
-Create `backend/src/test/java/com/memcyco/urlshortener/service/GeoResolverServiceTest.java`:
+Create `backend/src/test/java/com/avivly/urlshortener/service/GeoResolverServiceTest.java`:
 
 ```java
-package com.memcyco.urlshortener.service;
+package com.avivly.urlshortener.service;
 
-import com.memcyco.urlshortener.dto.GeoResult;
-import com.memcyco.urlshortener.model.GeoStatus;
+import com.avivly.urlshortener.dto.GeoResult;
+import com.avivly.urlshortener.model.GeoStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -80,16 +80,16 @@ failure (class does not exist yet). That is the expected red state.
 
 #### Step 2 — Implement `GeoResolverService`
 
-Create `backend/src/main/java/com/memcyco/urlshortener/service/GeoResolverService.java`:
+Create `backend/src/main/java/com/avivly/urlshortener/service/GeoResolverService.java`:
 
 ```java
-package com.memcyco.urlshortener.service;
+package com.avivly.urlshortener.service;
 
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.AddressNotFoundException;
 import com.maxmind.geoip2.record.City;
 import com.maxmind.geoip2.record.Country;
-import com.memcyco.urlshortener.dto.GeoResult;
+import com.avivly.urlshortener.dto.GeoResult;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -161,10 +161,10 @@ All five test cases must be green.
 
 #### Step 1 — Create the health indicator
 
-Create `backend/src/main/java/com/memcyco/urlshortener/config/GeoResolverHealthIndicator.java`:
+Create `backend/src/main/java/com/avivly/urlshortener/config/GeoResolverHealthIndicator.java`:
 
 ```java
-package com.memcyco.urlshortener.config;
+package com.avivly.urlshortener.config;
 
 import com.maxmind.geoip2.DatabaseReader;
 import org.springframework.boot.actuate.health.Health;

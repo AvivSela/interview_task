@@ -21,10 +21,10 @@ Extract the predicate into a package-private `IpUtils` utility class and update 
 
 ### 1. New file: `IpUtils.java`
 
-Create `backend/src/main/java/com/memcyco/urlshortener/util/IpUtils.java`:
+Create `backend/src/main/java/com/avivly/urlshortener/util/IpUtils.java`:
 
 ```java
-package com.memcyco.urlshortener.util;
+package com.avivly.urlshortener.util;
 
 import java.net.InetAddress;
 
@@ -43,7 +43,7 @@ public final class IpUtils {
 
 Add import:
 ```java
-import com.memcyco.urlshortener.util.IpUtils;
+import com.avivly.urlshortener.util.IpUtils;
 ```
 
 Replace the inline check in `resolve()`:
@@ -59,7 +59,7 @@ if (IpUtils.isPrivateAddress(addr)) {
 
 Add import:
 ```java
-import com.memcyco.urlshortener.util.IpUtils;
+import com.avivly.urlshortener.util.IpUtils;
 ```
 
 Replace the inline check in `extractClientIp()`:

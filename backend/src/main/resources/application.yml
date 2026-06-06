@@ -22,7 +22,7 @@ server:
 logging:
   level:
     root: WARN
-    com.memcyco: INFO
+    com.avivly: INFO
 
 management:
   endpoints:

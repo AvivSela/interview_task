@@ -10,9 +10,9 @@ deploy-k8s:
 	kubectl apply -f k8s/namespace.yaml
 	kubectl create secret generic postgres-secret \
 		--from-env-file=.env \
-		--namespace=memcyco \
+		--namespace=avivly \
 		--dry-run=client -o yaml | kubectl apply -f -
 	kubectl apply -f k8s/
 
 port-forward:
-	kubectl -n memcyco port-forward svc/nginx 8080:80 --address 0.0.0.0
+	kubectl -n avivly port-forward svc/nginx 8080:80 --address 0.0.0.0

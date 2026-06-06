@@ -2,7 +2,7 @@
 
 ## Goal
 
-Create `backend/src/main/java/com/memcyco/urlshortener/controller/CustomErrorController.java`.
+Create `backend/src/main/java/com/avivly/urlshortener/controller/CustomErrorController.java`.
 
 This controller claims Spring Boot's `/error` mapping so that any unhandled request or exception returns a polished HTML page (for browser requests) or a consistent JSON body (for API requests), instead of the Whitelabel fallback.
 
@@ -13,7 +13,7 @@ No other files need to change for this task.
 ## File to create
 
 ```
-backend/src/main/java/com/memcyco/urlshortener/controller/CustomErrorController.java
+backend/src/main/java/com/avivly/urlshortener/controller/CustomErrorController.java
 ```
 
 ---
@@ -23,7 +23,7 @@ backend/src/main/java/com/memcyco/urlshortener/controller/CustomErrorController.
 ### Class declaration
 
 ```java
-package com.memcyco.urlshortener.controller;
+package com.avivly.urlshortener.controller;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
@@ -155,7 +155,7 @@ Returns a self-contained HTML string (text block). **Inline CSS only — no `<li
       <p class="desc">     {description}  — font-size 0.9rem, color #6b7280, margin 0 0 1.5rem
       <a href="/" class="btn"> "Back to Dashboard"
   <footer> (text-align center, font-size .75rem, color #9ca3af, padding 1rem)
-    "MemCyCo URL Shortener"
+    "Avivly URL Shortener"
 ```
 
 ### CTA button style

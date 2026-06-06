@@ -3,7 +3,7 @@
 ## Project Context
 You are building an **analytics-driven URL shortener**.
 The backend Maven project exists at `backend/pom.xml` — Spring Boot 3.x, Java 17.
-The main class is `com.memcyco.urlshortener.UrlShortenerApplication`.
+The main class is `com.avivly.urlshortener.UrlShortenerApplication`.
 
 ## Your Task
 Create the multi-stage Docker build file for the backend.

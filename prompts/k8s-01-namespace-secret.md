@@ -15,7 +15,7 @@ Create `k8s/namespace.yaml`. The secret is generated from `.env` at deploy time 
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: memcyco
+  name: avivly
 ```
 
 ## How the secret is managed
@@ -23,7 +23,7 @@ Credentials live in `.env` (gitignored). The K8s secret is created via `make dep
 ```bash
 kubectl create secret generic postgres-secret \
   --from-env-file=.env \
-  --namespace=memcyco \
+  --namespace=avivly \
   --dry-run=client -o yaml | kubectl apply -f -
 ```
 
@@ -33,4 +33,4 @@ kubectl create secret generic postgres-secret \
 - `k8s/namespace.yaml` exists
 - `kubectl apply -f k8s/namespace.yaml` exits 0
 - `make deploy-k8s` creates the secret from `.env`
-- `kubectl -n memcyco get secret postgres-secret` shows the secret
+- `kubectl -n avivly get secret postgres-secret` shows the secret

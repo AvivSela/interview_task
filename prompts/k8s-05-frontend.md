@@ -18,7 +18,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
-  namespace: memcyco
+  namespace: avivly
 spec:
   replicas: 1
   selector:
@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: memcyco/frontend:latest
+        image: avivly/frontend:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
@@ -46,7 +46,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend
-  namespace: memcyco
+  namespace: avivly
 spec:
   selector:
     app: frontend
@@ -59,18 +59,18 @@ spec:
 - The frontend image already contains `frontend/nginx.conf` baked in (see `frontend/Dockerfile`). No ConfigMap is needed.
 - `frontend/nginx.conf` has an `/api/` proxy to `http://backend:8080` — this resolves correctly within the cluster via the `backend` K8s Service.
 - `imagePullPolicy: IfNotPresent` is correct for local minikube builds. Change to `Always` for a remote registry.
-- To replace `memcyco/frontend:latest` with your real registry image: edit the `image:` field.
+- To replace `avivly/frontend:latest` with your real registry image: edit the `image:` field.
 
 ## Build the image (minikube)
 ```bash
 eval $(minikube docker-env)
-docker build -t memcyco/frontend:latest ./frontend
+docker build -t avivly/frontend:latest ./frontend
 ```
 
 ## Build the image (remote registry)
 ```bash
-docker build -t your-registry/memcyco-frontend:latest ./frontend
-docker push your-registry/memcyco-frontend:latest
+docker build -t your-registry/avivly-frontend:latest ./frontend
+docker push your-registry/avivly-frontend:latest
 # then update image: field in k8s/frontend.yaml
 ```
 
@@ -78,5 +78,5 @@ docker push your-registry/memcyco-frontend:latest
 - `k8s/frontend.yaml` exists
 - Image is built and available to the cluster
 - `kubectl apply -f k8s/frontend.yaml` exits 0
-- `kubectl -n memcyco get deployment frontend` shows `1/1` READY
-- `kubectl -n memcyco get svc frontend` shows a ClusterIP service on port 80
+- `kubectl -n avivly get deployment frontend` shows `1/1` READY
+- `kubectl -n avivly get svc frontend` shows a ClusterIP service on port 80

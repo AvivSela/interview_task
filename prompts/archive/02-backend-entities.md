@@ -3,7 +3,7 @@
 ## Project Context
 You are building an **analytics-driven URL shortener**.
 The backend Maven project already exists at `backend/pom.xml` with:
-- Group `com.memcyco`, artifact `urlshortener`, Java 17, Spring Boot 3.x
+- Group `com.avivly`, artifact `urlshortener`, Java 17, Spring Boot 3.x
 - Dependencies include `spring-boot-starter-data-jpa`, `lombok`, `postgresql`
 
 ## Your Task
@@ -11,9 +11,9 @@ Create the two JPA entity classes.
 
 ## Files to Create
 
-### `backend/src/main/java/com/memcyco/urlshortener/model/ShortLink.java`
+### `backend/src/main/java/com/avivly/urlshortener/model/ShortLink.java`
 ```java
-package com.memcyco.urlshortener.model;
+package com.avivly.urlshortener.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -72,9 +72,9 @@ public class ShortLink {
 }
 ```
 
-### `backend/src/main/java/com/memcyco/urlshortener/model/ClickAnalytics.java`
+### `backend/src/main/java/com/avivly/urlshortener/model/ClickAnalytics.java`
 ```java
-package com.memcyco.urlshortener.model;
+package com.avivly.urlshortener.model;
 
 import jakarta.persistence.*;
 import lombok.*;

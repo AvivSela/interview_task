@@ -1,8 +1,8 @@
 # Task 8a — New test class: StrategyParamValidatorTest
 
 ## Context
-This is a Spring Boot URL shortener. Package root: `com.memcyco.urlshortener`.
-Test classes live in `backend/src/test/java/com/memcyco/urlshortener/`.
+This is a Spring Boot URL shortener. Package root: `com.avivly.urlshortener`.
+Test classes live in `backend/src/test/java/com/avivly/urlshortener/`.
 
 `StrategyParamValidator` is a `@Component` but can be instantiated directly in unit tests
 with `new StrategyParamValidator()` — no Spring context needed.
@@ -32,7 +32,7 @@ assertThatThrownBy(() -> validator.validate(...))
 
 ## File to create
 
-**Path:** `backend/src/test/java/com/memcyco/urlshortener/util/strategy/StrategyParamValidatorTest.java`
+**Path:** `backend/src/test/java/com/avivly/urlshortener/util/strategy/StrategyParamValidatorTest.java`
 
 Write all 12 test methods. Method names must match exactly:
 

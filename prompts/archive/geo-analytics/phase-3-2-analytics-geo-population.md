@@ -2,8 +2,8 @@
 
 ## Context
 
-Spring Boot URL shortener at `backend/`. Package: `com.memcyco.urlshortener`.
-File: `backend/src/main/java/com/memcyco/urlshortener/service/AnalyticsService.java`
+Spring Boot URL shortener at `backend/`. Package: `com.avivly.urlshortener`.
+File: `backend/src/main/java/com/avivly/urlshortener/service/AnalyticsService.java`
 
 **Prerequisites:**
 - Phase 1.2 complete: `ClickAnalytics` has `geoStatus`, `country`, `city`
@@ -17,7 +17,7 @@ row is saved with resolved geo data.
 
 ## Implementation
 
-Edit `backend/src/main/java/com/memcyco/urlshortener/service/AnalyticsService.java`.
+Edit `backend/src/main/java/com/avivly/urlshortener/service/AnalyticsService.java`.
 
 1. Inject `GeoResolverService`:
    ```java

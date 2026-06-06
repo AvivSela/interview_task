@@ -13,7 +13,7 @@ Tasks within the same phase can run in parallel unless marked with `depends_on`.
 **Create:** `backend/pom.xml`
 
 Requirements:
-- Group: `com.memcyco`, Artifact: `urlshortener`
+- Group: `com.avivly`, Artifact: `urlshortener`
 - Java 17, Spring Boot 3.x
 - Dependencies: `spring-boot-starter-web`, `spring-boot-starter-data-jpa`, `spring-boot-starter-cache`, `spring-boot-starter-validation`, `postgresql`, `caffeine`
 - Include `spring-boot-maven-plugin`
@@ -49,7 +49,7 @@ Requirements:
 ### TASK-03 — Create main Spring Boot application class
 `depends_on: TASK-01`
 
-**Create:** `backend/src/main/java/com/memcyco/urlshortener/UrlShortenerApplication.java`
+**Create:** `backend/src/main/java/com/avivly/urlshortener/UrlShortenerApplication.java`
 
 ```java
 @SpringBootApplication
@@ -92,7 +92,7 @@ server:
 logging:
   level:
     root: WARN
-    com.memcyco: INFO
+    com.avivly: INFO
 ```
 
 **Acceptance:** File is valid YAML. Environment variable placeholders allow Docker override.
@@ -104,7 +104,7 @@ logging:
 ### TASK-05 — Create `ShortLink` entity
 `depends_on: TASK-01`
 
-**Create:** `backend/src/main/java/com/memcyco/urlshortener/model/ShortLink.java`
+**Create:** `backend/src/main/java/com/avivly/urlshortener/model/ShortLink.java`
 
 Fields (map to `short_links` table):
 - `Long id` — `@Id @GeneratedValue(IDENTITY)`
@@ -139,7 +139,7 @@ Use Lombok `@Data @NoArgsConstructor @AllArgsConstructor @Builder`.
 ### TASK-06 — Create `ClickAnalytics` entity
 `depends_on: TASK-01`
 
-**Create:** `backend/src/main/java/com/memcyco/urlshortener/model/ClickAnalytics.java`
+**Create:** `backend/src/main/java/com/avivly/urlshortener/model/ClickAnalytics.java`
 
 Fields (map to `click_analytics` table):
 - `Long id` — `@Id @GeneratedValue(IDENTITY)`
@@ -158,7 +158,7 @@ Use Lombok `@Data @NoArgsConstructor @AllArgsConstructor @Builder`.
 ### TASK-07 — Create `ShortLinkRepository`
 `depends_on: TASK-05`
 
-**Create:** `backend/src/main/java/com/memcyco/urlshortener/repository/ShortLinkRepository.java`
+**Create:** `backend/src/main/java/com/avivly/urlshortener/repository/ShortLinkRepository.java`
 
 ```java
 public interface ShortLinkRepository extends JpaRepository<ShortLink, Long> {
@@ -177,7 +177,7 @@ public interface ShortLinkRepository extends JpaRepository<ShortLink, Long> {
 ### TASK-08 — Create `ClickAnalyticsRepository`
 `depends_on: TASK-06`
 
-**Create:** `backend/src/main/java/com/memcyco/urlshortener/repository/ClickAnalyticsRepository.java`
+**Create:** `backend/src/main/java/com/avivly/urlshortener/repository/ClickAnalyticsRepository.java`
 
 ```java
 public interface ClickAnalyticsRepository extends JpaRepository<ClickAnalytics, Long> {
@@ -203,7 +203,7 @@ public interface ClickAnalyticsRepository extends JpaRepository<ClickAnalytics, 
 ### TASK-09 — Create `CacheConfig`
 `depends_on: TASK-03`
 
-**Create:** `backend/src/main/java/com/memcyco/urlshortener/config/CacheConfig.java`
+**Create:** `backend/src/main/java/com/avivly/urlshortener/config/CacheConfig.java`
 
 ```java
 @Configuration
@@ -227,7 +227,7 @@ public class CacheConfig {
 ### TASK-10 — Create `AsyncConfig`
 `depends_on: TASK-03`
 
-**Create:** `backend/src/main/java/com/memcyco/urlshortener/config/AsyncConfig.java`
+**Create:** `backend/src/main/java/com/avivly/urlshortener/config/AsyncConfig.java`
 
 ```java
 @Configuration
@@ -253,7 +253,7 @@ public class AsyncConfig implements AsyncConfigurer {
 ### TASK-11 — Create `WebMvcConfig` (CORS)
 `depends_on: TASK-03`
 
-**Create:** `backend/src/main/java/com/memcyco/urlshortener/config/WebMvcConfig.java`
+**Create:** `backend/src/main/java/com/avivly/urlshortener/config/WebMvcConfig.java`
 
 ```java
 @Configuration
@@ -275,7 +275,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 ### TASK-12 — Create `Base62` utility
 `depends_on: TASK-01`
 
-**Create:** `backend/src/main/java/com/memcyco/urlshortener/util/Base62.java`
+**Create:** `backend/src/main/java/com/avivly/urlshortener/util/Base62.java`
 
 ```java
 public class Base62 {
@@ -300,7 +300,7 @@ public class Base62 {
 ### TASK-13 — Create request/response DTOs
 `depends_on: TASK-01`
 
-**Create** the following in `backend/src/main/java/com/memcyco/urlshortener/dto/`:
+**Create** the following in `backend/src/main/java/com/avivly/urlshortener/dto/`:
 
 **`CreateLinkRequest.java`**
 ```java
@@ -348,7 +348,7 @@ public record AnalyticsResponse(
 ### TASK-14 — Create `LinkService`
 `depends_on: TASK-07, TASK-09, TASK-12, TASK-13`
 
-**Create:** `backend/src/main/java/com/memcyco/urlshortener/service/LinkService.java`
+**Create:** `backend/src/main/java/com/avivly/urlshortener/service/LinkService.java`
 
 Implement:
 - `@Cacheable(value="shortLinks", key="#shortCode") ShortLink findByShortCode(String shortCode)`
@@ -364,7 +364,7 @@ Implement:
 ### TASK-15 — Create `AnalyticsService`
 `depends_on: TASK-08, TASK-10, TASK-13`
 
-**Create:** `backend/src/main/java/com/memcyco/urlshortener/service/AnalyticsService.java`
+**Create:** `backend/src/main/java/com/avivly/urlshortener/service/AnalyticsService.java`
 
 ```java
 @Service
@@ -399,7 +399,7 @@ public class AnalyticsService {
 ### TASK-16 — Create `RedirectController`
 `depends_on: TASK-14, TASK-15`
 
-**Create:** `backend/src/main/java/com/memcyco/urlshortener/controller/RedirectController.java`
+**Create:** `backend/src/main/java/com/avivly/urlshortener/controller/RedirectController.java`
 
 ```java
 @RestController
@@ -432,7 +432,7 @@ public class RedirectController {
 ### TASK-17 — Create `LinkController`
 `depends_on: TASK-14, TASK-15`
 
-**Create:** `backend/src/main/java/com/memcyco/urlshortener/controller/LinkController.java`
+**Create:** `backend/src/main/java/com/avivly/urlshortener/controller/LinkController.java`
 
 Implement at `/api/links`:
 - `POST /api/links` → `linkService.create(req)` → `201 Created`
@@ -675,7 +675,7 @@ services:
 ### TASK-26 — Write integration tests for redirect flow
 `depends_on: TASK-14, TASK-15, TASK-16`
 
-**Create:** `backend/src/test/java/com/memcyco/urlshortener/RedirectIntegrationTest.java`
+**Create:** `backend/src/test/java/com/avivly/urlshortener/RedirectIntegrationTest.java`
 
 Use `@SpringBootTest(webEnvironment = RANDOM_PORT)` + `TestRestTemplate`.
 

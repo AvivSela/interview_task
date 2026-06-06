@@ -5,33 +5,33 @@ You are building an **analytics-driven URL shortener**.
 
 The following services already exist:
 
-**`LinkService`** (in `com.memcyco.urlshortener.service`):
+**`LinkService`** (in `com.avivly.urlshortener.service`):
 - `ShortLink findByShortCode(String shortCode)` — returns null if not found
 - `List<ShortLink> findAll()`
 - `ShortLink create(CreateLinkRequest req)` — throws `ResponseStatusException(CONFLICT)` if taken
 - `ShortLink update(Long id, UpdateLinkRequest req)`
 - `void delete(Long id)`
 
-**`AnalyticsService`** (in `com.memcyco.urlshortener.service`):
+**`AnalyticsService`** (in `com.avivly.urlshortener.service`):
 - `void logClickAsync(String shortCode, String referer, String userAgent, String ip)`
 - `AnalyticsResponse getAnalytics(String shortCode)`
 
 **`ShortLink`** model has `isValid()` which returns false if expired, inactive, or click-exhausted.
 
-**DTOs:** `CreateLinkRequest`, `UpdateLinkRequest`, `AnalyticsResponse` in `com.memcyco.urlshortener.dto`.
+**DTOs:** `CreateLinkRequest`, `UpdateLinkRequest`, `AnalyticsResponse` in `com.avivly.urlshortener.dto`.
 
 ## Your Task
 Create the two REST controller classes.
 
 ## Files to Create
 
-### `backend/src/main/java/com/memcyco/urlshortener/controller/RedirectController.java`
+### `backend/src/main/java/com/avivly/urlshortener/controller/RedirectController.java`
 ```java
-package com.memcyco.urlshortener.controller;
+package com.avivly.urlshortener.controller;
 
-import com.memcyco.urlshortener.model.ShortLink;
-import com.memcyco.urlshortener.service.AnalyticsService;
-import com.memcyco.urlshortener.service.LinkService;
+import com.avivly.urlshortener.model.ShortLink;
+import com.avivly.urlshortener.service.AnalyticsService;
+import com.avivly.urlshortener.service.LinkService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -67,16 +67,16 @@ public class RedirectController {
 }
 ```
 
-### `backend/src/main/java/com/memcyco/urlshortener/controller/LinkController.java`
+### `backend/src/main/java/com/avivly/urlshortener/controller/LinkController.java`
 ```java
-package com.memcyco.urlshortener.controller;
+package com.avivly.urlshortener.controller;
 
-import com.memcyco.urlshortener.dto.AnalyticsResponse;
-import com.memcyco.urlshortener.dto.CreateLinkRequest;
-import com.memcyco.urlshortener.dto.UpdateLinkRequest;
-import com.memcyco.urlshortener.model.ShortLink;
-import com.memcyco.urlshortener.service.AnalyticsService;
-import com.memcyco.urlshortener.service.LinkService;
+import com.avivly.urlshortener.dto.AnalyticsResponse;
+import com.avivly.urlshortener.dto.CreateLinkRequest;
+import com.avivly.urlshortener.dto.UpdateLinkRequest;
+import com.avivly.urlshortener.model.ShortLink;
+import com.avivly.urlshortener.service.AnalyticsService;
+import com.avivly.urlshortener.service.LinkService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -4,7 +4,7 @@
 
 **Prerequisites:** Fixes #10, #8, #7, #6, #2, #5 applied.
 
-`backend/src/main/java/com/memcyco/urlshortener/service/AnalyticsService.java`
+`backend/src/main/java/com/avivly/urlshortener/service/AnalyticsService.java`
 
 The null-guard + cast patterns `row[n] != null ? row[n].toString() : ""` and `row[n] != null ? ((Number) row[n]).longValue() : 0L` appear across all five query blocks (daily, referrers, agents, countries, cities). A type change in one query (e.g., PostgreSQL JDBC returning `BigDecimal` instead of `Long`) must be updated everywhere or a `ClassCastException` surfaces at runtime.
 
@@ -14,7 +14,7 @@ Extract two `private static` helpers and replace all five lambda bodies. No beha
 
 ## Implementation
 
-Edit `backend/src/main/java/com/memcyco/urlshortener/service/AnalyticsService.java`.
+Edit `backend/src/main/java/com/avivly/urlshortener/service/AnalyticsService.java`.
 
 ### Step 1 — Add helpers at the bottom of the class (before the closing `}`)
 

@@ -20,24 +20,24 @@ docker-compose up --build backend          # rebuild a single service (no Makefi
 ```bash
 cp .env.example .env           # fill in POSTGRES_PASSWORD (secrets sourced from .env)
 make deploy-k8s                # apply namespace, upsert postgres-secret, apply all k8s/ manifests
-kubectl -n memcyco get all     # watch rollout status
+kubectl -n avivly get all     # watch rollout status
 ```
 
 `make deploy-k8s` runs three steps in order:
-1. `kubectl apply -f k8s/namespace.yaml` — creates the `memcyco` namespace
+1. `kubectl apply -f k8s/namespace.yaml` — creates the `avivly` namespace
 2. `kubectl create secret generic postgres-secret --from-env-file=.env ...` — upserts DB credentials as a K8s Secret
 3. `kubectl apply -f k8s/` — applies all manifests (configmap, postgres StatefulSet, backend/frontend Deployments, nginx LoadBalancer)
 
-**Images:** backend and frontend Deployments reference `memcyco/backend:latest` and `memcyco/frontend:latest` (`imagePullPolicy: IfNotPresent`). Build before deploying:
+**Images:** backend and frontend Deployments reference `avivly/backend:latest` and `avivly/frontend:latest` (`imagePullPolicy: IfNotPresent`). Build before deploying:
 ```bash
-docker build -t memcyco/backend:latest ./backend
-docker build -t memcyco/frontend:latest ./frontend
-# minikube users: minikube image load memcyco/backend:latest && minikube image load memcyco/frontend:latest
+docker build -t avivly/backend:latest ./backend
+docker build -t avivly/frontend:latest ./frontend
+# minikube users: minikube image load avivly/backend:latest && minikube image load avivly/frontend:latest
 ```
 
 **Startup ordering (K8s):** init containers replace `depends_on`. The backend init container waits for postgres:5432 via netcat; nginx init containers wait for backend:8080 and frontend:80 before starting.
 
-**Entry point:** the nginx LoadBalancer Service exposes port 80. On minikube: `minikube service nginx -n memcyco`.
+**Entry point:** the nginx LoadBalancer Service exposes port 80. On minikube: `minikube service nginx -n avivly`.
 
 ### Backend (Spring Boot + Maven)
 ```bash
@@ -62,7 +62,7 @@ npx vitest run src/components/LinksTable.test.jsx  # run a single test file
 
 ## Architecture
 
-### Backend package layout (`com.memcyco.urlshortener`)
+### Backend package layout (`com.avivly.urlshortener`)
 - `controller/` — `RedirectController` (public redirect at `/{shortCode}` and `/api/r/{shortCode}`), `LinkController` (CRUD at `/api/links`), `StrategyController` (strategy metadata)
 - `service/` — `LinkService` (create/update/delete + Caffeine cache), `AnalyticsService` (query analytics; `logClickAsync` is `@Async`), `GeoResolverService` (optional MaxMind GeoIP2 lookup)
 - `util/strategy/` — pluggable code generation via `CodeGenerationStrategy` interface; `StrategyRegistry` wires the three built-in strategies (`RANDOM_BASE62`, `HASH_TRUNCATE`, `SEQUENTIAL`)
@@ -82,7 +82,7 @@ npx vitest run src/components/LinksTable.test.jsx  # run a single test file
 Single-page app with one real route (`/`), one error route (`/link-expired`), and a `path="*"` catch-all that renders the Not Found page for any other unmatched path. State lives in `App.jsx`: links list, current edit target, active analytics short code, and tag filter. `api.js` is an axios instance; all calls go through it. `AnalyticsPanel` is rendered inline below the table when a short code is selected — it is not a modal.
 
 ### Kubernetes manifests (`k8s/`)
-- `namespace.yaml` — `memcyco` namespace
+- `namespace.yaml` — `avivly` namespace
 - `configmap.yaml` — nginx.conf baked as a ConfigMap (rate-limit 30 req/min on redirect path; proxy routing mirrors Docker Compose nginx)
 - `postgres.yaml` — StatefulSet (1 replica, 5Gi PVC) + ClusterIP Service; credentials from `postgres-secret`
 - `backend.yaml` — Deployment + ClusterIP Service; init container waits on postgres:5432; geo disabled by default (no `GEO_DB_PATH`)

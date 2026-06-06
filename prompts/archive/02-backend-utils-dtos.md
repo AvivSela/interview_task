@@ -2,7 +2,7 @@
 
 ## Project Context
 You are building an **analytics-driven URL shortener**.
-The backend Maven project already exists at `backend/pom.xml` with group `com.memcyco`, artifact `urlshortener`, Java 17, Spring Boot 3.x.
+The backend Maven project already exists at `backend/pom.xml` with group `com.avivly`, artifact `urlshortener`, Java 17, Spring Boot 3.x.
 Dependencies include `spring-boot-starter-validation`.
 
 ## Your Task
@@ -10,9 +10,9 @@ Create the `Base62` utility class and all request/response DTOs.
 
 ## Files to Create
 
-### `backend/src/main/java/com/memcyco/urlshortener/util/Base62.java`
+### `backend/src/main/java/com/avivly/urlshortener/util/Base62.java`
 ```java
-package com.memcyco.urlshortener.util;
+package com.avivly.urlshortener.util;
 
 import java.security.SecureRandom;
 import java.util.stream.Collectors;
@@ -32,9 +32,9 @@ public class Base62 {
 }
 ```
 
-### `backend/src/main/java/com/memcyco/urlshortener/dto/CreateLinkRequest.java`
+### `backend/src/main/java/com/avivly/urlshortener/dto/CreateLinkRequest.java`
 ```java
-package com.memcyco.urlshortener.dto;
+package com.avivly.urlshortener.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -49,9 +49,9 @@ public record CreateLinkRequest(
 ) {}
 ```
 
-### `backend/src/main/java/com/memcyco/urlshortener/dto/UpdateLinkRequest.java`
+### `backend/src/main/java/com/avivly/urlshortener/dto/UpdateLinkRequest.java`
 ```java
-package com.memcyco.urlshortener.dto;
+package com.avivly.urlshortener.dto;
 
 import java.time.LocalDateTime;
 
@@ -64,9 +64,9 @@ public record UpdateLinkRequest(
 ) {}
 ```
 
-### `backend/src/main/java/com/memcyco/urlshortener/dto/AnalyticsResponse.java`
+### `backend/src/main/java/com/avivly/urlshortener/dto/AnalyticsResponse.java`
 ```java
-package com.memcyco.urlshortener.dto;
+package com.avivly.urlshortener.dto;
 
 import java.util.List;
 

@@ -15,7 +15,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx
-  namespace: memcyco
+  namespace: avivly
 spec:
   replicas: 1
   selector:
@@ -57,7 +57,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: nginx
-  namespace: memcyco
+  namespace: avivly
 spec:
   type: LoadBalancer
   selector:
@@ -69,13 +69,13 @@ spec:
 
 ## Notes
 - `subPath: nginx.conf` mounts only the single key from the ConfigMap at `/etc/nginx/nginx.conf`, replacing the file without touching other files in `/etc/nginx/`.
-- **minikube users**: `LoadBalancer` services get an `<pending>` external IP until you run `minikube tunnel` in a separate terminal. Alternatively change `type: LoadBalancer` to `type: NodePort` and access via `minikube service nginx -n memcyco`.
-- **Cloud (EKS/GKE/AKS)**: `LoadBalancer` automatically provisions a cloud load balancer and assigns an external IP. Use `kubectl -n memcyco get svc nginx` to watch for it.
+- **minikube users**: `LoadBalancer` services get an `<pending>` external IP until you run `minikube tunnel` in a separate terminal. Alternatively change `type: LoadBalancer` to `type: NodePort` and access via `minikube service nginx -n avivly`.
+- **Cloud (EKS/GKE/AKS)**: `LoadBalancer` automatically provisions a cloud load balancer and assigns an external IP. Use `kubectl -n avivly get svc nginx` to watch for it.
 
 ## After Applying — Full Smoke Test
 ```bash
 # Get the external IP
-kubectl -n memcyco get svc nginx
+kubectl -n avivly get svc nginx
 
 # Test the app
 curl http://<EXTERNAL-IP>/api/links          # should return JSON array
@@ -86,7 +86,7 @@ curl -I http://<EXTERNAL-IP>/someShortCode   # should return 302 or redirect to 
 ## Acceptance Criteria
 - `k8s/nginx.yaml` exists
 - `kubectl apply -f k8s/nginx.yaml` exits 0
-- `kubectl -n memcyco get deployment nginx` shows `1/1` READY
-- `kubectl -n memcyco get svc nginx` shows an external IP (or NodePort)
+- `kubectl -n avivly get deployment nginx` shows `1/1` READY
+- `kubectl -n avivly get svc nginx` shows an external IP (or NodePort)
 - `curl http://<IP>/api/links` returns a valid JSON response
 - `curl http://<IP>/` serves the React app HTML

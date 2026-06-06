@@ -4,7 +4,7 @@
 
 **Prerequisites:** Fixes #10, #8, #7, #6, #2 applied.
 
-`backend/src/main/java/com/memcyco/urlshortener/service/AnalyticsService.java:66`
+`backend/src/main/java/com/avivly/urlshortener/service/AnalyticsService.java:66`
 
 `getAnalytics()` always issues `topCountries` and `topCities` queries. When `GEO_DB_PATH` is unset (dev, CI), all `country`/`city` columns are `NULL`, so both queries return empty result sets every time — two unnecessary DB round-trips per analytics request.
 

@@ -2,7 +2,7 @@
 
 ## Context
 
-Spring Boot URL shortener at `backend/`. Package: `com.memcyco.urlshortener`.
+Spring Boot URL shortener at `backend/`. Package: `com.avivly.urlshortener`.
 Tasks 2.1 and 2.2 are independent — run them with two parallel subagents.
 
 **Prerequisite:** Phase 0 complete (geoip2 on classpath).
@@ -14,12 +14,12 @@ Tasks 2.1 and 2.2 are independent — run them with two parallel subagents.
 ### Subagent 1 — Task 2.1: `GeoResult` record
 
 Create file:
-`backend/src/main/java/com/memcyco/urlshortener/dto/GeoResult.java`
+`backend/src/main/java/com/avivly/urlshortener/dto/GeoResult.java`
 
 ```java
-package com.memcyco.urlshortener.dto;
+package com.avivly.urlshortener.dto;
 
-import com.memcyco.urlshortener.model.GeoStatus;
+import com.avivly.urlshortener.model.GeoStatus;
 import org.springframework.lang.Nullable;
 
 public record GeoResult(
@@ -60,10 +60,10 @@ geo:
 ```
 
 **Step 2** — Create file:
-`backend/src/main/java/com/memcyco/urlshortener/config/GeoConfig.java`
+`backend/src/main/java/com/avivly/urlshortener/config/GeoConfig.java`
 
 ```java
-package com.memcyco.urlshortener.config;
+package com.avivly.urlshortener.config;
 
 import com.maxmind.db.CHMCache;
 import com.maxmind.geoip2.DatabaseReader;

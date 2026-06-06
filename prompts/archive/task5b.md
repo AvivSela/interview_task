@@ -1,8 +1,8 @@
 # Task 5b — New StrategyController
 
 ## Context
-This is a Spring Boot URL shortener. Package root: `com.memcyco.urlshortener`.
-Controllers live in `backend/src/main/java/com/memcyco/urlshortener/controller/`.
+This is a Spring Boot URL shortener. Package root: `com.avivly.urlshortener`.
+Controllers live in `backend/src/main/java/com/avivly/urlshortener/controller/`.
 This task is independent of Task 5a and can be done in parallel with it.
 
 `StrategyRegistry` already exists and has `getAllSchemas()` which returns
@@ -19,14 +19,14 @@ After this task the project must compile (`mvn compile -pl backend`).
 
 ## File to create
 
-**Path:** `backend/src/main/java/com/memcyco/urlshortener/controller/StrategyController.java`
+**Path:** `backend/src/main/java/com/avivly/urlshortener/controller/StrategyController.java`
 
 ```java
-package com.memcyco.urlshortener.controller;
+package com.avivly.urlshortener.controller;
 
-import com.memcyco.urlshortener.util.strategy.StrategyParamDefinition;
-import com.memcyco.urlshortener.util.strategy.StrategyRegistry;
-import com.memcyco.urlshortener.util.strategy.StrategyType;
+import com.avivly.urlshortener.util.strategy.StrategyParamDefinition;
+import com.avivly.urlshortener.util.strategy.StrategyRegistry;
+import com.avivly.urlshortener.util.strategy.StrategyType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

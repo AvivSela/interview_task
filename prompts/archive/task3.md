@@ -1,8 +1,8 @@
 # Task 3 — Interface change + all three strategy updates (ATOMIC)
 
 ## Context
-This is a Spring Boot URL shortener. Package root: `com.memcyco.urlshortener`.
-Strategy classes live in `backend/src/main/java/com/memcyco/urlshortener/util/strategy/`.
+This is a Spring Boot URL shortener. Package root: `com.avivly.urlshortener`.
+Strategy classes live in `backend/src/main/java/com/avivly/urlshortener/util/strategy/`.
 
 `ParamType`, `StrategyParamDefinition`, and `StrategyParamValidator` already exist from prior tasks.
 
@@ -21,9 +21,9 @@ After this task the project must compile (`mvn compile -pl backend`).
 
 ### `CodeGenerationStrategy.java` (current)
 ```java
-package com.memcyco.urlshortener.util.strategy;
+package com.avivly.urlshortener.util.strategy;
 
-import com.memcyco.urlshortener.model.ShortLink;
+import com.avivly.urlshortener.model.ShortLink;
 
 public interface CodeGenerationStrategy {
     String generate(String originalUrl, ShortLink partialEntity);
@@ -32,10 +32,10 @@ public interface CodeGenerationStrategy {
 
 ### `RandomBase62Strategy.java` (current)
 ```java
-package com.memcyco.urlshortener.util.strategy;
+package com.avivly.urlshortener.util.strategy;
 
-import com.memcyco.urlshortener.model.ShortLink;
-import com.memcyco.urlshortener.util.Base62;
+import com.avivly.urlshortener.model.ShortLink;
+import com.avivly.urlshortener.util.Base62;
 
 public class RandomBase62Strategy implements CodeGenerationStrategy {
 
@@ -48,9 +48,9 @@ public class RandomBase62Strategy implements CodeGenerationStrategy {
 
 ### `HashTruncateStrategy.java` (current)
 ```java
-package com.memcyco.urlshortener.util.strategy;
+package com.avivly.urlshortener.util.strategy;
 
-import com.memcyco.urlshortener.model.ShortLink;
+import com.avivly.urlshortener.model.ShortLink;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -81,9 +81,9 @@ public class HashTruncateStrategy implements CodeGenerationStrategy {
 
 ### `SequentialStrategy.java` (current)
 ```java
-package com.memcyco.urlshortener.util.strategy;
+package com.avivly.urlshortener.util.strategy;
 
-import com.memcyco.urlshortener.model.ShortLink;
+import com.avivly.urlshortener.model.ShortLink;
 
 public class SequentialStrategy implements CodeGenerationStrategy {
 
@@ -118,7 +118,7 @@ public class SequentialStrategy implements CodeGenerationStrategy {
 
 ### `CodeGenerationStrategy.java` (replace entirely)
 ```java
-package com.memcyco.urlshortener.util.strategy;
+package com.avivly.urlshortener.util.strategy;
 
 import java.util.List;
 import java.util.Map;
@@ -138,9 +138,9 @@ public interface CodeGenerationStrategy {
 
 ### `RandomBase62Strategy.java` (replace entirely)
 ```java
-package com.memcyco.urlshortener.util.strategy;
+package com.avivly.urlshortener.util.strategy;
 
-import com.memcyco.urlshortener.util.Base62;
+import com.avivly.urlshortener.util.Base62;
 
 import java.util.List;
 import java.util.Map;
@@ -165,7 +165,7 @@ public class RandomBase62Strategy implements CodeGenerationStrategy {
 
 ### `HashTruncateStrategy.java` (replace entirely)
 ```java
-package com.memcyco.urlshortener.util.strategy;
+package com.avivly.urlshortener.util.strategy;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -210,7 +210,7 @@ public class HashTruncateStrategy implements CodeGenerationStrategy {
 
 ### `SequentialStrategy.java` (replace entirely)
 ```java
-package com.memcyco.urlshortener.util.strategy;
+package com.avivly.urlshortener.util.strategy;
 
 import java.util.List;
 import java.util.Map;
@@ -259,7 +259,7 @@ to pass `(url, null, Map.of())` as a temporary stub. Task 4 will replace Strateg
 
 Minimal temporary fix for `StrategyRegistry.generate()`:
 ```java
-public String generate(StrategyType type, String url, com.memcyco.urlshortener.model.ShortLink entity) {
+public String generate(StrategyType type, String url, com.avivly.urlshortener.model.ShortLink entity) {
     CodeGenerationStrategy strategy = strategies.getOrDefault(type, strategies.get(StrategyType.RANDOM_BASE62));
     Long id = entity != null ? entity.getId() : null;
     return strategy.generate(url, id, java.util.Map.of());

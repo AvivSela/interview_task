@@ -5,7 +5,7 @@ You are building an **analytics-driven URL shortener**.
 
 The following classes already exist and compile:
 
-**Repositories (in `com.memcyco.urlshortener.repository`):**
+**Repositories (in `com.avivly.urlshortener.repository`):**
 - `ShortLinkRepository` — extends `JpaRepository<ShortLink, Long>`
   - `Optional<ShortLink> findByShortCode(String shortCode)`
   - `void incrementClicks(String shortCode)` — `@Modifying @Query`
@@ -15,7 +15,7 @@ The following classes already exist and compile:
   - `List<Object[]> topReferrers(String shortCode)`
   - `List<Object[]> topUserAgents(String shortCode)`
 
-**DTOs (in `com.memcyco.urlshortener.dto`):**
+**DTOs (in `com.avivly.urlshortener.dto`):**
 - `CreateLinkRequest(originalUrl, customAlias, strategy, maxClicks, expiresAt, tags)`
 - `UpdateLinkRequest(originalUrl, isActive, expiresAt, tags, maxClicks)`
 - `AnalyticsResponse(totalClicks, clicksOverTime, topReferrers, topUserAgents)`
@@ -23,22 +23,22 @@ The following classes already exist and compile:
 
 **Config:** Cache named `"shortLinks"` via Caffeine; async executor with prefix `"analytics-"`.
 
-**Utility:** `Base62.generate(int length)` in `com.memcyco.urlshortener.util`.
+**Utility:** `Base62.generate(int length)` in `com.avivly.urlshortener.util`.
 
 ## Your Task
 Create both service classes.
 
 ## Files to Create
 
-### `backend/src/main/java/com/memcyco/urlshortener/service/LinkService.java`
+### `backend/src/main/java/com/avivly/urlshortener/service/LinkService.java`
 ```java
-package com.memcyco.urlshortener.service;
+package com.avivly.urlshortener.service;
 
-import com.memcyco.urlshortener.dto.CreateLinkRequest;
-import com.memcyco.urlshortener.dto.UpdateLinkRequest;
-import com.memcyco.urlshortener.model.ShortLink;
-import com.memcyco.urlshortener.repository.ShortLinkRepository;
-import com.memcyco.urlshortener.util.Base62;
+import com.avivly.urlshortener.dto.CreateLinkRequest;
+import com.avivly.urlshortener.dto.UpdateLinkRequest;
+import com.avivly.urlshortener.model.ShortLink;
+import com.avivly.urlshortener.repository.ShortLinkRepository;
+import com.avivly.urlshortener.util.Base62;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -114,14 +114,14 @@ public class LinkService {
 }
 ```
 
-### `backend/src/main/java/com/memcyco/urlshortener/service/AnalyticsService.java`
+### `backend/src/main/java/com/avivly/urlshortener/service/AnalyticsService.java`
 ```java
-package com.memcyco.urlshortener.service;
+package com.avivly.urlshortener.service;
 
-import com.memcyco.urlshortener.dto.AnalyticsResponse;
-import com.memcyco.urlshortener.model.ClickAnalytics;
-import com.memcyco.urlshortener.repository.ClickAnalyticsRepository;
-import com.memcyco.urlshortener.repository.ShortLinkRepository;
+import com.avivly.urlshortener.dto.AnalyticsResponse;
+import com.avivly.urlshortener.model.ClickAnalytics;
+import com.avivly.urlshortener.repository.ClickAnalyticsRepository;
+import com.avivly.urlshortener.repository.ShortLinkRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;

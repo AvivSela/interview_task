@@ -4,7 +4,7 @@
 
 **Prerequisites:** Fix #10 and fix #8 applied.
 
-`backend/src/main/java/com/memcyco/urlshortener/model/GeoStatus.java:4`
+`backend/src/main/java/com/avivly/urlshortener/model/GeoStatus.java:4`
 
 `GeoStatus.PENDING` is never persisted. `AnalyticsService.logClickAsync` always resolves geo before calling `clickRepo.save()`, so no row is ever inserted with `geo_status = 'PENDING'`. Both the Java enum value and the `V2` migration's `DEFAULT 'PENDING'` are dead weight that mislead future queries and dashboards.
 
@@ -23,7 +23,7 @@ The DB column is `VARCHAR(20)`, **not** a PostgreSQL enum type, so removing the 
 Remove the `PENDING` line. Final enum:
 
 ```java
-package com.memcyco.urlshortener.model;
+package com.avivly.urlshortener.model;
 
 public enum GeoStatus {
     RESOLVED,        // country/city successfully populated

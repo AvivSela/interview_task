@@ -25,7 +25,7 @@ Create the Spring Boot Maven project structure for the URL shortener backend.
         <relativePath/>
     </parent>
 
-    <groupId>com.memcyco</groupId>
+    <groupId>com.avivly</groupId>
     <artifactId>urlshortener</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>urlshortener</name>
@@ -99,7 +99,7 @@ Create the Spring Boot Maven project structure for the URL shortener backend.
 
 ## Acceptance Criteria
 - `backend/pom.xml` exists and is valid XML
-- Group is `com.memcyco`, artifact is `urlshortener`
+- Group is `com.avivly`, artifact is `urlshortener`
 - Java version is 17, Spring Boot 3.x
 - All required dependencies present: `spring-boot-starter-web`, `spring-boot-starter-data-jpa`, `spring-boot-starter-cache`, `spring-boot-starter-validation`, `postgresql`, `caffeine`, `lombok`, `h2` (test scope)
 - `spring-boot-maven-plugin` is included in build

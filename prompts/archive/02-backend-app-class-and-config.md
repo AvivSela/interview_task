@@ -2,16 +2,16 @@
 
 ## Project Context
 You are building an **analytics-driven URL shortener**.
-The backend Maven project already exists at `backend/pom.xml` with group `com.memcyco`, artifact `urlshortener`, Java 17, Spring Boot 3.x.
+The backend Maven project already exists at `backend/pom.xml` with group `com.avivly`, artifact `urlshortener`, Java 17, Spring Boot 3.x.
 
 ## Your Task
 Create the main Spring Boot application entry point and the YAML configuration file.
 
 ## Files to Create
 
-### `backend/src/main/java/com/memcyco/urlshortener/UrlShortenerApplication.java`
+### `backend/src/main/java/com/avivly/urlshortener/UrlShortenerApplication.java`
 ```java
-package com.memcyco.urlshortener;
+package com.avivly.urlshortener;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -50,7 +50,7 @@ server:
 logging:
   level:
     root: WARN
-    com.memcyco: INFO
+    com.avivly: INFO
 ```
 
 ## Acceptance Criteria

@@ -2,8 +2,8 @@
 
 ## Context
 
-Spring Boot URL shortener at `backend/`. Package: `com.memcyco.urlshortener`.
-Entity: `backend/src/main/java/com/memcyco/urlshortener/model/ClickAnalytics.java`
+Spring Boot URL shortener at `backend/`. Package: `com.avivly.urlshortener`.
+Entity: `backend/src/main/java/com/avivly/urlshortener/model/ClickAnalytics.java`
 
 Current fields: `id`, `shortCode`, `clickedAt`, `referer`, `userAgent`, `ipAddress`.
 Uses Lombok `@Builder`, `@Data`, `@NoArgsConstructor`, `@AllArgsConstructor`.
@@ -17,11 +17,11 @@ persist its result alongside each click record.
 
 ## Implementation
 
-Edit `backend/src/main/java/com/memcyco/urlshortener/model/ClickAnalytics.java`.
+Edit `backend/src/main/java/com/avivly/urlshortener/model/ClickAnalytics.java`.
 
 Add the import:
 ```java
-import com.memcyco.urlshortener.model.GeoStatus;
+import com.avivly.urlshortener.model.GeoStatus;
 ```
 
 Add these three fields after the `ipAddress` field:

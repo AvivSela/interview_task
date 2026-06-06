@@ -1,7 +1,7 @@
 # Product Requirements Document
 
 **Feature:** IP Geolocation Analytics for Shortened Link Clicks
-**Project:** Memcyco URL Shortener
+**Project:** Avivly URL Shortener
 **Author:** Aviv
 **Date:** 2026-06-03
 **Status:** Draft

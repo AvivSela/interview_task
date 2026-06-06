@@ -3,7 +3,7 @@
 ## Project Context
 You are building an **analytics-driven URL shortener**.
 The main application class already exists at:
-`backend/src/main/java/com/memcyco/urlshortener/UrlShortenerApplication.java`
+`backend/src/main/java/com/avivly/urlshortener/UrlShortenerApplication.java`
 It has `@EnableAsync` and `@EnableCaching`.
 
 Dependencies available in `pom.xml`: `spring-boot-starter-cache`, `caffeine`, `spring-boot-starter-web`.
@@ -13,9 +13,9 @@ Create the three Spring configuration classes: cache, async executor, and CORS.
 
 ## Files to Create
 
-### `backend/src/main/java/com/memcyco/urlshortener/config/CacheConfig.java`
+### `backend/src/main/java/com/avivly/urlshortener/config/CacheConfig.java`
 ```java
-package com.memcyco.urlshortener.config;
+package com.avivly.urlshortener.config;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.cache.CacheManager;
@@ -43,9 +43,9 @@ public class CacheConfig {
 }
 ```
 
-### `backend/src/main/java/com/memcyco/urlshortener/config/AsyncConfig.java`
+### `backend/src/main/java/com/avivly/urlshortener/config/AsyncConfig.java`
 ```java
-package com.memcyco.urlshortener.config;
+package com.avivly.urlshortener.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
@@ -71,9 +71,9 @@ public class AsyncConfig implements AsyncConfigurer {
 }
 ```
 
-### `backend/src/main/java/com/memcyco/urlshortener/config/WebMvcConfig.java`
+### `backend/src/main/java/com/avivly/urlshortener/config/WebMvcConfig.java`
 ```java
-package com.memcyco.urlshortener.config;
+package com.avivly.urlshortener.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

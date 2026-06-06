@@ -4,7 +4,7 @@
 
 **Prerequisites:** Fixes #10, #8, #7, #6 applied.
 
-`backend/src/main/java/com/memcyco/urlshortener/config/GeoConfig.java:28`
+`backend/src/main/java/com/avivly/urlshortener/config/GeoConfig.java:28`
 
 When `./geo/GeoLite2-City.mmdb` does not exist on the host, Docker bind-mount creates a **directory** at that path. `file.exists()` returns `true` (a directory exists), the "not found" guard is skipped, and `DatabaseReader.Builder(file).build()` throws `IOException` — producing a generic "Failed to open MaxMind DB" message instead of an actionable diagnosis.
 
@@ -14,7 +14,7 @@ Add an `isDirectory()` check immediately after the blank-path guard and before t
 
 ## Implementation
 
-Edit `backend/src/main/java/com/memcyco/urlshortener/config/GeoConfig.java`.
+Edit `backend/src/main/java/com/avivly/urlshortener/config/GeoConfig.java`.
 
 Replace this section:
 

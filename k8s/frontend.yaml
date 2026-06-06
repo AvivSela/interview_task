@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
-  namespace: memcyco
+  namespace: avivly
 spec:
   replicas: 1
   selector:
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: memcyco/frontend:latest
+        image: avivly/frontend:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
@@ -30,7 +30,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend
-  namespace: memcyco
+  namespace: avivly
 spec:
   selector:
     app: frontend

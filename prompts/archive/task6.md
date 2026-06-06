@@ -1,8 +1,8 @@
 # Task 6 — Update LinkService to use validateAndGenerate
 
 ## Context
-This is a Spring Boot URL shortener. Package root: `com.memcyco.urlshortener`.
-`LinkService` is at `backend/src/main/java/com/memcyco/urlshortener/service/LinkService.java`.
+This is a Spring Boot URL shortener. Package root: `com.avivly.urlshortener`.
+`LinkService` is at `backend/src/main/java/com/avivly/urlshortener/service/LinkService.java`.
 
 All prior tasks (1–5a, 5b) are complete:
 - `StrategyRegistry.validateAndGenerate(type, url, id, rawParams)` exists
@@ -66,7 +66,7 @@ String code = strategyRegistry.validateAndGenerate(
 
 After making these two replacements, remove the backward-compat `generate()` shim from
 `StrategyRegistry.java` (it was only there to keep this class compiling; it is no longer needed).
-Also remove the `import com.memcyco.urlshortener.model.ShortLink` from `StrategyRegistry` if it
+Also remove the `import com.avivly.urlshortener.model.ShortLink` from `StrategyRegistry` if it
 is only used by that shim.
 
 ---

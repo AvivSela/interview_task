@@ -2,8 +2,8 @@
 
 ## Context
 
-Spring Boot URL shortener at `backend/`. Package: `com.memcyco.urlshortener`.
-File: `backend/src/main/java/com/memcyco/urlshortener/service/AnalyticsService.java`
+Spring Boot URL shortener at `backend/`. Package: `com.avivly.urlshortener`.
+File: `backend/src/main/java/com/avivly/urlshortener/service/AnalyticsService.java`
 
 **Prerequisites:**
 - Phase 3.3 complete: `topCountries(shortCode, limit)` and `topCities(shortCode, limit)`

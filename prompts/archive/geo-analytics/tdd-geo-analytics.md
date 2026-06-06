@@ -1,7 +1,7 @@
 # Technical Design Document
 
 **Feature:** IP Geolocation Analytics for Shortened Link Clicks
-**Project:** Memcyco URL Shortener
+**Project:** Avivly URL Shortener
 **Author:** Aviv
 **Date:** 2026-06-03
 **Status:** Draft
@@ -77,7 +77,7 @@ private String city;
 **New file:** `model/GeoStatus.java`
 
 ```java
-package com.memcyco.urlshortener.model;
+package com.avivly.urlshortener.model;
 
 public enum GeoStatus {
     PENDING,      // pre-feature rows / not yet processed
@@ -139,9 +139,9 @@ CREATE INDEX IF NOT EXISTS idx_click_analytics_short_code_city
 **New file:** `dto/GeoResult.java`
 
 ```java
-package com.memcyco.urlshortener.dto;
+package com.avivly.urlshortener.dto;
 
-import com.memcyco.urlshortener.model.GeoStatus;
+import com.avivly.urlshortener.model.GeoStatus;
 
 public record GeoResult(String country, String city, GeoStatus status) {
 

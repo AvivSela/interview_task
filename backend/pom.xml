@@ -12,7 +12,7 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.memcyco</groupId>
+    <groupId>com.avivly</groupId>
     <artifactId>urlshortener</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>urlshortener</name>

@@ -16,7 +16,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: nginx-config
-  namespace: memcyco
+  namespace: avivly
 data:
   nginx.conf: |
     events {}
@@ -59,10 +59,10 @@ data:
 ```
 
 ## Notes
-- `backend` and `frontend` resolve to K8s Services of the same name within the `memcyco` namespace — no changes to the nginx config are needed.
+- `backend` and `frontend` resolve to K8s Services of the same name within the `avivly` namespace — no changes to the nginx config are needed.
 - Do NOT modify `nginx/nginx.conf`. The ConfigMap is a copy for K8s use; the original file remains for Docker Compose.
 
 ## Acceptance Criteria
 - `k8s/configmap.yaml` exists
 - `kubectl apply -f k8s/configmap.yaml` exits 0
-- `kubectl -n memcyco get configmap nginx-config` shows the configmap
+- `kubectl -n avivly get configmap nginx-config` shows the configmap

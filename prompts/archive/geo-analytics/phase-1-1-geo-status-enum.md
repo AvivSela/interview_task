@@ -2,7 +2,7 @@
 
 ## Context
 
-Spring Boot URL shortener at `backend/`. Package: `com.memcyco.urlshortener`.
+Spring Boot URL shortener at `backend/`. Package: `com.avivly.urlshortener`.
 This is the first data-model task; subsequent tasks (1.2, 1.3) depend on it.
 
 **Prerequisite:** Phase 0 complete (geoip2 dependency in pom.xml).
@@ -14,10 +14,10 @@ each click event.
 
 ## Implementation
 
-Create file: `backend/src/main/java/com/memcyco/urlshortener/model/GeoStatus.java`
+Create file: `backend/src/main/java/com/avivly/urlshortener/model/GeoStatus.java`
 
 ```java
-package com.memcyco.urlshortener.model;
+package com.avivly.urlshortener.model;
 
 public enum GeoStatus {
     PENDING,     // not yet resolved (default at insert time)

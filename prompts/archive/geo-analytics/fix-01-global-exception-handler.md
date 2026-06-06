@@ -14,10 +14,10 @@ Add a `@RestControllerAdvice` that intercepts `MethodArgumentNotValidException` 
 
 ## Implementation
 
-Create new file: `backend/src/main/java/com/memcyco/urlshortener/config/GlobalExceptionHandler.java`
+Create new file: `backend/src/main/java/com/avivly/urlshortener/config/GlobalExceptionHandler.java`
 
 ```java
-package com.memcyco.urlshortener.config;
+package com.avivly.urlshortener.config;
 
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;

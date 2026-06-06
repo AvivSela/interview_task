@@ -2,7 +2,7 @@
 
 ## Context
 
-`backend/src/main/java/com/memcyco/urlshortener/dto/GeoResult.java`
+`backend/src/main/java/com/avivly/urlshortener/dto/GeoResult.java`
 
 `GeoResult` is a record with five factory methods. The four failure factories (`disabled`, `private_`, `notFound`, `error`) each call `new GeoResult(...)` on every invocation. At high click volume with geo disabled, `GeoResult.disabled()` is called on every redirect, generating short-lived garbage objects on the async executor threads.
 
@@ -14,14 +14,14 @@ Replace the four allocating failure factories with pre-allocated `static final` 
 
 ## Implementation
 
-Edit `backend/src/main/java/com/memcyco/urlshortener/dto/GeoResult.java`.
+Edit `backend/src/main/java/com/avivly/urlshortener/dto/GeoResult.java`.
 
 Replace the entire file with:
 
 ```java
-package com.memcyco.urlshortener.dto;
+package com.avivly.urlshortener.dto;
 
-import com.memcyco.urlshortener.model.GeoStatus;
+import com.avivly.urlshortener.model.GeoStatus;
 import org.springframework.lang.Nullable;
 
 public record GeoResult(GeoStatus status, @Nullable String country, @Nullable String city) {

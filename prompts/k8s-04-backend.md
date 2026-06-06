@@ -18,7 +18,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
-  namespace: memcyco
+  namespace: avivly
 spec:
   replicas: 1
   selector:
@@ -38,7 +38,7 @@ spec:
         - until nc -z postgres 5432; do echo "waiting for postgres..."; sleep 2; done
       containers:
       - name: backend
-        image: memcyco/backend:latest
+        image: avivly/backend:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
@@ -80,7 +80,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: backend
-  namespace: memcyco
+  namespace: avivly
 spec:
   selector:
     app: backend
@@ -92,19 +92,19 @@ spec:
 ## Notes
 - `$(POSTGRES_DB)` in the `SPRING_DATASOURCE_URL` value is K8s env-variable substitution — it resolves from the `POSTGRES_DB` env entry defined immediately above it in the same list.
 - `imagePullPolicy: IfNotPresent` is correct for local minikube builds. Change to `Always` when pushing to a remote registry.
-- To replace `memcyco/backend:latest` with your real registry image: edit the `image:` field to `your-registry/memcyco-backend:latest`.
+- To replace `avivly/backend:latest` with your real registry image: edit the `image:` field to `your-registry/avivly-backend:latest`.
 - **GeoIP is disabled** by default (no `GEO_DB_PATH` env var). To enable it, add a PVC containing the `GeoLite2-City.mmdb` file and mount it, then add `- name: GEO_DB_PATH` / `value: /data/GeoLite2-City.mmdb` to the env block.
 
 ## Build the image (minikube)
 ```bash
 eval $(minikube docker-env)
-docker build -t memcyco/backend:latest ./backend
+docker build -t avivly/backend:latest ./backend
 ```
 
 ## Build the image (remote registry)
 ```bash
-docker build -t your-registry/memcyco-backend:latest ./backend
-docker push your-registry/memcyco-backend:latest
+docker build -t your-registry/avivly-backend:latest ./backend
+docker push your-registry/avivly-backend:latest
 # then update image: field in k8s/backend.yaml
 ```
 
@@ -112,6 +112,6 @@ docker push your-registry/memcyco-backend:latest
 - `k8s/backend.yaml` exists
 - Image is built and available to the cluster
 - `kubectl apply -f k8s/backend.yaml` exits 0
-- `kubectl -n memcyco get deployment backend` shows `1/1` READY
-- `kubectl -n memcyco logs deployment/backend` shows Spring Boot started successfully (no DB connection errors)
-- `kubectl -n memcyco get svc backend` shows a ClusterIP service on port 8080
+- `kubectl -n avivly get deployment backend` shows `1/1` READY
+- `kubectl -n avivly logs deployment/backend` shows Spring Boot started successfully (no DB connection errors)
+- `kubectl -n avivly get svc backend` shows a ClusterIP service on port 8080

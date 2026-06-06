@@ -32,13 +32,13 @@ spring:
     type: caffeine
 ```
 
-### `backend/src/test/java/com/memcyco/urlshortener/RedirectIntegrationTest.java`
+### `backend/src/test/java/com/avivly/urlshortener/RedirectIntegrationTest.java`
 ```java
-package com.memcyco.urlshortener;
+package com.avivly.urlshortener;
 
-import com.memcyco.urlshortener.dto.CreateLinkRequest;
-import com.memcyco.urlshortener.model.ShortLink;
-import com.memcyco.urlshortener.service.LinkService;
+import com.avivly.urlshortener.dto.CreateLinkRequest;
+import com.avivly.urlshortener.model.ShortLink;
+import com.avivly.urlshortener.service.LinkService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

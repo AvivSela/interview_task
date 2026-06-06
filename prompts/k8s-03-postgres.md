@@ -15,7 +15,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: postgres
-  namespace: memcyco
+  namespace: avivly
 spec:
   serviceName: postgres
   replicas: 1
@@ -73,7 +73,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: postgres
-  namespace: memcyco
+  namespace: avivly
 spec:
   selector:
     app: postgres
@@ -90,6 +90,6 @@ spec:
 ## Acceptance Criteria
 - `k8s/postgres.yaml` exists
 - `kubectl apply -f k8s/postgres.yaml` exits 0
-- `kubectl -n memcyco get statefulset postgres` shows `1/1` READY
-- `kubectl -n memcyco get svc postgres` shows a ClusterIP service on port 5432
-- `kubectl -n memcyco get pvc` shows a Bound PVC
+- `kubectl -n avivly get statefulset postgres` shows `1/1` READY
+- `kubectl -n avivly get svc postgres` shows a ClusterIP service on port 5432
+- `kubectl -n avivly get pvc` shows a Bound PVC

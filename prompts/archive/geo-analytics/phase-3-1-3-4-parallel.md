@@ -2,7 +2,7 @@
 
 ## Context
 
-Spring Boot URL shortener at `backend/`. Package: `com.memcyco.urlshortener`.
+Spring Boot URL shortener at `backend/`. Package: `com.avivly.urlshortener`.
 Tasks 3.1, 3.3, and 3.4 touch different files and are fully independent.
 Run them with three parallel subagents.
 
@@ -18,7 +18,7 @@ Run them with three parallel subagents.
 
 ### Subagent 1 — Task 3.1: Real client IP extraction in `RedirectController` (TDD)
 
-File: `backend/src/main/java/com/memcyco/urlshortener/controller/RedirectController.java`
+File: `backend/src/main/java/com/avivly/urlshortener/controller/RedirectController.java`
 
 The current implementation passes `request.getRemoteAddr()` directly.
 Replace it with a proper extraction method that respects proxy headers.
@@ -26,14 +26,14 @@ Replace it with a proper extraction method that respects proxy headers.
 #### Step 1 — Write the test first
 
 Add a new test class:
-`backend/src/test/java/com/memcyco/urlshortener/controller/RedirectControllerIpTest.java`
+`backend/src/test/java/com/avivly/urlshortener/controller/RedirectControllerIpTest.java`
 
 ```java
-package com.memcyco.urlshortener.controller;
+package com.avivly.urlshortener.controller;
 
-import com.memcyco.urlshortener.model.ShortLink;
-import com.memcyco.urlshortener.service.AnalyticsService;
-import com.memcyco.urlshortener.service.LinkService;
+import com.avivly.urlshortener.model.ShortLink;
+import com.avivly.urlshortener.service.AnalyticsService;
+import com.avivly.urlshortener.service.LinkService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -141,7 +141,7 @@ All three tests must be green. Full redirect integration tests must still pass.
 
 ### Subagent 2 — Task 3.3: Aggregate queries in `ClickAnalyticsRepository`
 
-File: `backend/src/main/java/com/memcyco/urlshortener/repository/ClickAnalyticsRepository.java`
+File: `backend/src/main/java/com/avivly/urlshortener/repository/ClickAnalyticsRepository.java`
 
 Add two native aggregate queries after the existing ones:
 
@@ -173,13 +173,13 @@ List<Object[]> topCities(@Param("shortCode") String shortCode,
 
 #### Write a `@DataJpaTest` to verify
 
-Create `backend/src/test/java/com/memcyco/urlshortener/repository/ClickAnalyticsRepositoryTest.java`:
+Create `backend/src/test/java/com/avivly/urlshortener/repository/ClickAnalyticsRepositoryTest.java`:
 
 ```java
-package com.memcyco.urlshortener.repository;
+package com.avivly.urlshortener.repository;
 
-import com.memcyco.urlshortener.model.ClickAnalytics;
-import com.memcyco.urlshortener.model.GeoStatus;
+import com.avivly.urlshortener.model.ClickAnalytics;
+import com.avivly.urlshortener.model.GeoStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -241,14 +241,14 @@ cd backend && ./mvnw test -Dtest=ClickAnalyticsRepositoryTest
 
 ### Subagent 3 — Task 3.4: Extend `AnalyticsResponse` DTO
 
-File: `backend/src/main/java/com/memcyco/urlshortener/dto/AnalyticsResponse.java`
+File: `backend/src/main/java/com/avivly/urlshortener/dto/AnalyticsResponse.java`
 
 Current record has: `totalClicks`, `clicksOverTime`, `topReferrers`, `topUserAgents`.
 
 Add two new inner records and two new list fields:
 
 ```java
-package com.memcyco.urlshortener.dto;
+package com.avivly.urlshortener.dto;
 
 import java.util.List;
 

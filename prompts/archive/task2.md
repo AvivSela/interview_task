@@ -1,8 +1,8 @@
 # Task 2 — New component: StrategyParamValidator
 
 ## Context
-This is a Spring Boot URL shortener. Package root: `com.memcyco.urlshortener`.
-Strategy classes live in `backend/src/main/java/com/memcyco/urlshortener/util/strategy/`.
+This is a Spring Boot URL shortener. Package root: `com.avivly.urlshortener`.
+Strategy classes live in `backend/src/main/java/com/avivly/urlshortener/util/strategy/`.
 
 `ParamType` and `StrategyParamDefinition` already exist from a prior task.
 Do NOT modify those files.
@@ -16,10 +16,10 @@ After this task the project must compile (`mvn compile -pl backend`).
 
 ## File to create
 
-**Path:** `backend/src/main/java/com/memcyco/urlshortener/util/strategy/StrategyParamValidator.java`
+**Path:** `backend/src/main/java/com/avivly/urlshortener/util/strategy/StrategyParamValidator.java`
 
 ```java
-package com.memcyco.urlshortener.util.strategy;
+package com.avivly.urlshortener.util.strategy;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;

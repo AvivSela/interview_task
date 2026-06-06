@@ -1,8 +1,8 @@
 # Task 4 — Replace StrategyRegistry
 
 ## Context
-This is a Spring Boot URL shortener. Package root: `com.memcyco.urlshortener`.
-Strategy classes live in `backend/src/main/java/com/memcyco/urlshortener/util/strategy/`.
+This is a Spring Boot URL shortener. Package root: `com.avivly.urlshortener`.
+Strategy classes live in `backend/src/main/java/com/avivly/urlshortener/util/strategy/`.
 
 The following already exist from prior tasks:
 - `ParamType`, `StrategyParamDefinition`, `StrategyParamValidator`
@@ -25,9 +25,9 @@ After this task the project must compile (`mvn compile -pl backend`).
 
 ## Current state of `StrategyRegistry.java`
 ```java
-package com.memcyco.urlshortener.util.strategy;
+package com.avivly.urlshortener.util.strategy;
 
-import com.memcyco.urlshortener.model.ShortLink;
+import com.avivly.urlshortener.model.ShortLink;
 import org.springframework.stereotype.Component;
 
 import java.util.EnumMap;
@@ -57,12 +57,12 @@ public class StrategyRegistry {
 
 ## New state of `StrategyRegistry.java` (replace entirely)
 
-**Path:** `backend/src/main/java/com/memcyco/urlshortener/util/strategy/StrategyRegistry.java`
+**Path:** `backend/src/main/java/com/avivly/urlshortener/util/strategy/StrategyRegistry.java`
 
 ```java
-package com.memcyco.urlshortener.util.strategy;
+package com.avivly.urlshortener.util.strategy;
 
-import com.memcyco.urlshortener.model.ShortLink;
+import com.avivly.urlshortener.model.ShortLink;
 import org.springframework.stereotype.Component;
 
 import java.util.*;

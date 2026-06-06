@@ -10,7 +10,7 @@
 
 ### 1. CRITICAL — Infinite redirect loop: `302 → /link-expired` matches nginx short-code regex
 
-**File:** `backend/src/main/java/com/memcyco/urlshortener/controller/RedirectController.java:29`
+**File:** `backend/src/main/java/com/avivly/urlshortener/controller/RedirectController.java:29`
 
 The expired/invalid link response was changed from `410 Gone` to `302 Found → /link-expired`. nginx has:
 
@@ -28,7 +28,7 @@ location ~ ^/[A-Za-z0-9_-]+ {
 
 ### 2. HIGH — `recordClick` is now synchronous: a DB error aborts the redirect with a 500
 
-**File:** `backend/src/main/java/com/memcyco/urlshortener/service/LinkService.java:115`
+**File:** `backend/src/main/java/com/avivly/urlshortener/service/LinkService.java:115`
 
 `@Async` was removed from `recordClick`. `RedirectController.redirect()` calls `linkService.recordClick(shortCode)` with no try/catch. If `repo.incrementClicks()` throws (deadlock, connection timeout, `DataAccessException`), the exception propagates through the controller. `GlobalExceptionHandler` only handles `MethodArgumentNotValidException` and `ResponseStatusException` — a raw JPA exception falls through to Spring Boot's default 500 handler. The user gets a 500 instead of their 302 redirect.
 
@@ -38,7 +38,7 @@ location ~ ^/[A-Za-z0-9_-]+ {
 
 ### 3. MEDIUM — `clickRepo.save()` failure in `logClickAsync` silently drops the click
 
-**File:** `backend/src/main/java/com/memcyco/urlshortener/service/AnalyticsService.java:22`
+**File:** `backend/src/main/java/com/avivly/urlshortener/service/AnalyticsService.java:22`
 
 `@Transactional` was removed from `logClickAsync`. The method now calls `geoResolverService.resolve(ip)` (safe — has a catch-all) then `clickRepo.save(...)` with no try/catch. If `save()` throws, Spring's default `SimpleAsyncUncaughtExceptionHandler` logs at ERROR and swallows the exception. No `AsyncUncaughtExceptionHandler` is configured in `AsyncConfig`. The click is permanently lost with only a log line as evidence.
 
@@ -48,7 +48,7 @@ location ~ ^/[A-Za-z0-9_-]+ {
 
 ### 4. MEDIUM — `topReferrers` / `topUserAgents` silently truncated at 10 with no signal
 
-**File:** `backend/src/main/java/com/memcyco/urlshortener/repository/ClickAnalyticsRepository.java:26`
+**File:** `backend/src/main/java/com/avivly/urlshortener/repository/ClickAnalyticsRepository.java:26`
 
 Old JPQL queries returned all results. The new native queries add `LIMIT :limit` (hardcoded as `10` in `AnalyticsService`). `AnalyticsResponse` has no `totalReferrers`/`totalUserAgents` count field. A link with 50 distinct referrers returns only 10 — the client cannot distinguish "exactly 10 referrers" from "truncated at 10". Any analytics export or monitoring that expected complete data is now silently wrong.
 
@@ -87,7 +87,7 @@ const handleCopy = async () => {
 
 ### 6. PLAUSIBLE — Stale `@Cacheable` result allows concurrent requests to exceed `maxClicks`
 
-**File:** `backend/src/main/java/com/memcyco/urlshortener/service/LinkService.java:28`
+**File:** `backend/src/main/java/com/avivly/urlshortener/service/LinkService.java:28`
 
 `findByShortCode` is `@Cacheable` and returns a `ShortLink` with a frozen `totalClicks` value. N concurrent redirect threads can all read the same cached entry where `totalClicks == maxClicks - 1`, all pass `isValid()`, all serve the redirect, then each call `recordClick()` — which atomically increments the DB counter and evicts the cache, but only after all N threads have already passed the validity check. The `@CacheEvict` added in this PR reduces the ongoing window but cannot close the concurrent-read gap.
 
@@ -114,7 +114,7 @@ Mutating a ref during the render function is a side-effect that violates React's
 
 ### 8. LOW — `CHARS` alphabet constant duplicated across `HashTruncateStrategy`, `SequentialStrategy`, and `Base62.java`
 
-**File:** `backend/src/main/java/com/memcyco/urlshortener/util/strategy/HashTruncateStrategy.java:11`
+**File:** `backend/src/main/java/com/avivly/urlshortener/util/strategy/HashTruncateStrategy.java:11`
 
 All three declare the same `String CHARS = "abc...0-9"`. If the alphabet is updated in one place (e.g., removing ambiguous chars `0/O/l/1`), the other copies diverge silently. Hash-generated codes and random/sequential codes would use different character sets.
 
@@ -124,7 +124,7 @@ All three declare the same `String CHARS = "abc...0-9"`. If the alphabet is upda
 
 ### 9. LOW — `ALLOWED_ALGORITHMS` in `StrategyParamValidator` is disconnected from `HashTruncateStrategy`'s schema
 
-**File:** `backend/src/main/java/com/memcyco/urlshortener/util/strategy/StrategyParamValidator.java:13`
+**File:** `backend/src/main/java/com/avivly/urlshortener/util/strategy/StrategyParamValidator.java:13`
 
 ```java
 private static final Set<String> ALLOWED_ALGORITHMS = Set.of("SHA-256", "SHA-512");
@@ -138,7 +138,7 @@ private static final Set<String> ALLOWED_ALGORITHMS = Set.of("SHA-256", "SHA-512
 
 ### 10. LOW — `StrategyRegistry.validateAndGenerate` silently falls back to `RANDOM_BASE62` for unregistered types
 
-**File:** `backend/src/main/java/com/memcyco/urlshortener/util/strategy/StrategyRegistry.java:21`
+**File:** `backend/src/main/java/com/avivly/urlshortener/util/strategy/StrategyRegistry.java:21`
 
 ```java
 CodeGenerationStrategy strategy = strategies.getOrDefault(

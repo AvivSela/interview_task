@@ -2,7 +2,7 @@
 
 ## Context
 
-URL shortener project at `/home/aviv/dev/memcyco/`.
+URL shortener project at `/home/aviv/dev/avivly/`.
 Tasks 6.1, 6.2, and 6.3 are fully independent — run them with three parallel subagents.
 
 **Prerequisites:** All previous phases complete and merged.
@@ -56,7 +56,7 @@ when `MAXMIND_LICENSE_KEY` is set.
 **Goal:** Document/configure how to mount `GeoLite2-City.mmdb` into the container
 and wire it to `GEO_DB_PATH`.
 
-Edit `docker-compose.yml` (found at `/home/aviv/dev/memcyco/docker-compose.yml`).
+Edit `docker-compose.yml` (found at `/home/aviv/dev/avivly/docker-compose.yml`).
 
 Add a volume and environment variable to the backend service:
 

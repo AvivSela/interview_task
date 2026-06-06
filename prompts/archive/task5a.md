@@ -1,7 +1,7 @@
 # Task 5a — Add strategyParams to CreateLinkRequest
 
 ## Context
-This is a Spring Boot URL shortener. Package root: `com.memcyco.urlshortener`.
+This is a Spring Boot URL shortener. Package root: `com.avivly.urlshortener`.
 This task is independent of Task 5b and can be done in parallel with it.
 
 ## Goal
@@ -12,7 +12,7 @@ After this task the project must compile (`mvn compile -pl backend`).
 
 ## Current state of `CreateLinkRequest.java`
 ```java
-package com.memcyco.urlshortener.dto;
+package com.avivly.urlshortener.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -31,10 +31,10 @@ public record CreateLinkRequest(
 
 ## New state (replace entirely)
 
-**Path:** `backend/src/main/java/com/memcyco/urlshortener/dto/CreateLinkRequest.java`
+**Path:** `backend/src/main/java/com/avivly/urlshortener/dto/CreateLinkRequest.java`
 
 ```java
-package com.memcyco.urlshortener.dto;
+package com.avivly.urlshortener.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -59,7 +59,7 @@ Find all `new CreateLinkRequest(...)` call sites (they are in test files) and ad
 the fourth argument (the new `strategyParams` position) to each one.
 
 Search for `new CreateLinkRequest(` in the test directory:
-`backend/src/test/java/com/memcyco/urlshortener/LinkControllerIntegrationTest.java`
+`backend/src/test/java/com/avivly/urlshortener/LinkControllerIntegrationTest.java`
 
 Each call currently passes 6 args; it must now pass 7, with `null` as the 4th arg.
 Example — current:

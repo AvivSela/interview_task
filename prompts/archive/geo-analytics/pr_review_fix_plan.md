@@ -11,7 +11,7 @@ Ten findings from the automated code review. Each section covers what to change,
 **Fix.** Keep `include-message: never` (it prevents accidental exposure of exception messages from unexpected code paths). Instead, add a `@ControllerAdvice` that intercepts validation exceptions and writes an explicit `{"message": "..."}` body.
 
 ```java
-// NEW FILE: backend/src/main/java/com/memcyco/urlshortener/config/GlobalExceptionHandler.java
+// NEW FILE: backend/src/main/java/com/avivly/urlshortener/config/GlobalExceptionHandler.java
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -140,7 +140,7 @@ List<AnalyticsResponse.CityCount> topCities = geoResolverService.isEnabled()
 **Fix.** Extract to a package-private utility:
 
 ```java
-// NEW FILE: backend/src/main/java/com/memcyco/urlshortener/util/IpUtils.java
+// NEW FILE: backend/src/main/java/com/avivly/urlshortener/util/IpUtils.java
 public final class IpUtils {
     private IpUtils() {}
 

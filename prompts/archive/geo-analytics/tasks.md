@@ -1,7 +1,7 @@
 # Implementation Tasks — IP Geolocation Analytics
 
 **Source:** `tdd-geo-analytics.md` · **PRD:** `prd-geo-analytics.md`
-**Module:** Memcyco URL Shortener (Spring Boot backend + React frontend)
+**Module:** Avivly URL Shortener (Spring Boot backend + React frontend)
 
 Tasks are ordered by dependency. Each is atomic, independently committable, and
 states its own verification step. Follow the project's existing conventions

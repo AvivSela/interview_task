@@ -1,11 +1,11 @@
 # Task 8b — Update per-strategy unit tests
 
 ## Context
-This is a Spring Boot URL shortener. Package root: `com.memcyco.urlshortener`.
+This is a Spring Boot URL shortener. Package root: `com.avivly.urlshortener`.
 The three strategy test files are at:
-- `backend/src/test/java/com/memcyco/urlshortener/util/strategy/RandomBase62StrategyTest.java`
-- `backend/src/test/java/com/memcyco/urlshortener/util/strategy/HashTruncateStrategyTest.java`
-- `backend/src/test/java/com/memcyco/urlshortener/util/strategy/SequentialStrategyTest.java`
+- `backend/src/test/java/com/avivly/urlshortener/util/strategy/RandomBase62StrategyTest.java`
+- `backend/src/test/java/com/avivly/urlshortener/util/strategy/HashTruncateStrategyTest.java`
+- `backend/src/test/java/com/avivly/urlshortener/util/strategy/SequentialStrategyTest.java`
 
 The strategy interface changed in a prior task. The new signature is:
 ```java

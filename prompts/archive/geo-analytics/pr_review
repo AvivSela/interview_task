@@ -6,43 +6,43 @@
     "failure_scenario": "LinkForm.jsx line 94 reads `err.response?.data?.message` and uses it as the displayed error string; with 'never', Spring omits the 'message' field from all 400/422 error bodies, so every validation error (blank URL, invalid input, etc.) shows the generic 'Something went wrong.' fallback instead of the actual server-side message."
   },
   {
-    "file": "backend/src/main/java/com/memcyco/urlshortener/config/GeoConfig.java",
+    "file": "backend/src/main/java/com/avivly/urlshortener/config/GeoConfig.java",
     "line": 28,
     "summary": "GeoConfig does not guard against the case where the configured path is a directory, causing a misleading IOException degradation path instead of a clean 'path blank' warning.",
     "failure_scenario": "When docker-compose bind-mounts ./geo/GeoLite2-City.mmdb and that path does not exist on the host, Docker silently creates a directory at that path; file.exists() returns true, the 'not found' branch is bypassed, DatabaseReader.Builder(file).build() throws IOException, which is caught and logged at WARN — geo degrades, but operators see 'Failed to open MaxMind DB' instead of the cleaner 'path not set' message, making the root cause (no file placed in ./geo/) harder to diagnose."
   },
   {
-    "file": "backend/src/main/java/com/memcyco/urlshortener/service/AnalyticsService.java",
+    "file": "backend/src/main/java/com/avivly/urlshortener/service/AnalyticsService.java",
     "line": 25,
     "summary": "@Async + @Transactional acquires a JDBC connection eagerly at method entry, then holds it open for the entire duration of GeoResolverService.resolve(), including a synchronous DatabaseReader.city() file-I/O call.",
     "failure_scenario": "With 10 threads in the analyticsTaskExecutor pool, 10 concurrent slow mmdb reads (e.g. under disk pressure or a cold OS page cache after startup) hold all 10 HikariCP connections simultaneously, starving the main request thread's link-lookup queries; redirect responses block waiting for a free connection until the geo lookups complete or the pool timeout fires."
   },
   {
-    "file": "backend/src/main/java/com/memcyco/urlshortener/service/AnalyticsService.java",
+    "file": "backend/src/main/java/com/avivly/urlshortener/service/AnalyticsService.java",
     "line": 47,
     "summary": "The Object[] row-mapping null-guard pattern is copy-pasted across five independent stream lambdas with no shared helper, creating ClassCastException exposure when one site is updated and the others are not.",
     "failure_scenario": "If a DB driver upgrade or dialect change causes a COUNT(*) column to return BigDecimal instead of Long, only the site a developer notices will be updated; the remaining four sites silently cast BigDecimal to Number (which succeeds) and call .longValue(), which is fine — but if the type becomes String (e.g. a native-query quirk on some PostgreSQL JDBC versions), all four sites throw ClassCastException at runtime only when that code path is exercised, not at startup."
   },
   {
-    "file": "backend/src/main/java/com/memcyco/urlshortener/service/AnalyticsService.java",
+    "file": "backend/src/main/java/com/avivly/urlshortener/service/AnalyticsService.java",
     "line": 66,
     "summary": "topCountries and topCities are unconditionally queried on every analytics request even when geo resolution is disabled and all rows have NULL country/city.",
     "failure_scenario": "When GEO_DB_PATH is unset (the default in dev and CI without a MaxMind key), every call to getAnalytics() issues two index range scans on click_analytics filtered by short_code where country/city IS NOT NULL — returning empty result sets every time; at moderate analytics traffic this doubles unnecessary DB round-trips with no benefit."
   },
   {
-    "file": "backend/src/main/java/com/memcyco/urlshortener/controller/RedirectController.java",
+    "file": "backend/src/main/java/com/avivly/urlshortener/controller/RedirectController.java",
     "line": 55,
     "summary": "The private-IP predicate (isSiteLocalAddress || isLoopbackAddress || isLinkLocalAddress) is duplicated verbatim in extractClientIp and again in GeoResolverService.resolve, so the two can silently diverge.",
     "failure_scenario": "If a developer adds a check for link-local IPv6 (isLinkLocalAddress already covers fe80::/10) or carrier-grade NAT (100.64.0.0/10, which Java's isSiteLocalAddress does NOT cover), they update one site and miss the other; an address that passes the XFF filter as 'public' is then re-classified as private by the geo resolver, producing a PRIVATE geo-status for an IP the controller treated as public — or vice versa."
   },
   {
-    "file": "backend/src/main/java/com/memcyco/urlshortener/model/GeoStatus.java",
+    "file": "backend/src/main/java/com/avivly/urlshortener/model/GeoStatus.java",
     "line": 3,
     "summary": "GeoStatus.PENDING is a live enum value that is never actually persisted, because logClickAsync always completes geo resolution before saving the ClickAnalytics row.",
     "failure_scenario": "Any future analytics query, dashboard filter, or migration that adds WHERE geo_status != 'PENDING' must account for a state that can never appear in real data; conversely, any raw-SQL report that does NOT exclude PENDING silently returns correct results today but breaks if PENDING is ever written (e.g. by a background-retry mechanism), with no compiler or test catching the discrepancy."
   },
   {
-    "file": "backend/src/main/java/com/memcyco/urlshortener/service/GeoResolverService.java",
+    "file": "backend/src/main/java/com/avivly/urlshortener/service/GeoResolverService.java",
     "line": 34,
     "summary": "A null country name from the MaxMind record is treated as NOT_FOUND, conflating a clean 'IP not in database' result with a data-quality anomaly on a record that IS in the database.",
     "failure_scenario": "For an IP that MaxMind has in its database but with a null country (a real edge case in the GeoLite2 free tier for some allocations), the method returns GeoResult.notFound() and stores geo_status=NOT_FOUND — indistinguishable from an IP simply absent from the database; the 90% RESOLVED success-metric cannot distinguish 'not in DB' from 'in DB but country absent', making it impossible to diagnose coverage gaps in the MaxMind data."
@@ -54,7 +54,7 @@
     "failure_scenario": "Adding a tracing header (e.g. X-Request-ID for correlation) or updating the X-Forwarded-Proto logic requires editing two separate location blocks; missing one means the backend receives inconsistent headers depending on which route nginx matched, causing geo-IP attribution or tracing to silently fail for one traffic class while working for the other."
   },
   {
-    "file": "backend/src/main/java/com/memcyco/urlshortener/dto/GeoResult.java",
+    "file": "backend/src/main/java/com/avivly/urlshortener/dto/GeoResult.java",
     "line": 16,
     "summary": "The four 'failure' factory methods (private_, notFound, error, disabled) each allocate a new GeoResult instance on every call rather than returning pre-allocated constants.",
     "failure_scenario": "With geo disabled and high click volume (e.g. 2000 req/s), GeoResult.disabled() allocates 2000 short-lived records per second that immediately become garbage; replacing them with static final constants (DISABLED, PRIVATE, NOT_FOUND, ERROR) would reduce this to zero allocations on the hot async path at no semantic cost."

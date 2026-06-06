@@ -2,7 +2,7 @@
 
 ## Context
 
-Spring Boot URL shortener at `backend/`. Package: `com.memcyco.urlshortener`.
+Spring Boot URL shortener at `backend/`. Package: `com.avivly.urlshortener`.
 Test DB: H2 (in-memory, PostgreSQL compat mode). Test fixture: `GeoLite2-City-Test.mmdb`.
 
 **Prerequisites:** All previous phases complete (entire geo pipeline is wired).
@@ -30,14 +30,14 @@ spring.jpa.hibernate.ddl-auto=create-drop
 ```
 
 Create / extend
-`backend/src/test/java/com/memcyco/urlshortener/GeoAnalyticsIntegrationTest.java`:
+`backend/src/test/java/com/avivly/urlshortener/GeoAnalyticsIntegrationTest.java`:
 
 ```java
-package com.memcyco.urlshortener;
+package com.avivly.urlshortener;
 
-import com.memcyco.urlshortener.model.ClickAnalytics;
-import com.memcyco.urlshortener.model.GeoStatus;
-import com.memcyco.urlshortener.repository.ClickAnalyticsRepository;
+import com.avivly.urlshortener.model.ClickAnalytics;
+import com.avivly.urlshortener.model.GeoStatus;
+import com.avivly.urlshortener.repository.ClickAnalyticsRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

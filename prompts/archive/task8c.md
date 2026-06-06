@@ -1,7 +1,7 @@
 # Task 8c — New StrategyControllerTest + additions to LinkControllerIntegrationTest
 
 ## Context
-This is a Spring Boot URL shortener. Package root: `com.memcyco.urlshortener`.
+This is a Spring Boot URL shortener. Package root: `com.avivly.urlshortener`.
 Integration tests use `@SpringBootTest(webEnvironment = RANDOM_PORT)` + `TestRestTemplate`
 and `@ActiveProfiles("test")`. See existing `LinkControllerIntegrationTest` for the pattern.
 
@@ -23,7 +23,7 @@ The response must NOT contain keys `defaultValue`, `min`, or `max`.
 
 ## File 1 — Create `StrategyControllerTest.java`
 
-**Path:** `backend/src/test/java/com/memcyco/urlshortener/StrategyControllerTest.java`
+**Path:** `backend/src/test/java/com/avivly/urlshortener/StrategyControllerTest.java`
 
 Write exactly these two test methods:
 
@@ -47,7 +47,7 @@ Parse the response as `Map<String, Object>` using `ParameterizedTypeReference` o
 
 ## File 2 — Add to `LinkControllerIntegrationTest.java`
 
-**Path:** `backend/src/test/java/com/memcyco/urlshortener/LinkControllerIntegrationTest.java`
+**Path:** `backend/src/test/java/com/avivly/urlshortener/LinkControllerIntegrationTest.java`
 
 Add the following 6 test methods to the existing class. Do not modify any existing tests.
 

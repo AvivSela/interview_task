@@ -33,7 +33,7 @@ that schema. The frontend fetches the schema and renders the correct input field
 > so the compiler catches typos and serialization is unambiguous.
 
 ```
-backend/src/main/java/com/memcyco/urlshortener/util/strategy/ParamType.java
+backend/src/main/java/com/avivly/urlshortener/util/strategy/ParamType.java
 ```
 
 ```java
@@ -56,7 +56,7 @@ public enum ParamType {
 > time. Add `min`/`max` for numeric bounds enforcement.
 
 ```
-backend/src/main/java/com/memcyco/urlshortener/util/strategy/StrategyParamDefinition.java
+backend/src/main/java/com/avivly/urlshortener/util/strategy/StrategyParamDefinition.java
 ```
 
 ```java
@@ -89,7 +89,7 @@ public static StrategyParamDefinition of(String name, ParamType type,
 > dedicated component so every caller goes through one place and `LinkService` stays focused.
 
 ```
-backend/src/main/java/com/memcyco/urlshortener/util/strategy/StrategyParamValidator.java
+backend/src/main/java/com/avivly/urlshortener/util/strategy/StrategyParamValidator.java
 ```
 
 Responsibilities:
@@ -405,7 +405,7 @@ and `StrategyRegistry`.
 > If auth is added later, the full schema can be gated behind it.
 
 ```
-backend/src/main/java/com/memcyco/urlshortener/controller/StrategyController.java
+backend/src/main/java/com/avivly/urlshortener/controller/StrategyController.java
 ```
 
 Public response DTO (strips implementation details):

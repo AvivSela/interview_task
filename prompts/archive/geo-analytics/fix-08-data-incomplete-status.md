@@ -4,7 +4,7 @@
 
 **Prerequisite:** Fix #10 applied (`GeoResult` uses static constants).
 
-`backend/src/main/java/com/memcyco/urlshortener/service/GeoResolverService.java:34`
+`backend/src/main/java/com/avivly/urlshortener/service/GeoResolverService.java:34`
 
 MaxMind GeoLite2 free tier contains records where the country field is `null` for some IP allocations. Currently `GeoResolverService.resolve()` returns `GeoResult.notFound()` for these — making them indistinguishable from IPs absent from the database entirely. The `RESOLVED` success-rate metric cannot separate data-quality gaps from missing coverage.
 
