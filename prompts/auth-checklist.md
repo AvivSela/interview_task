@@ -1,7 +1,7 @@
 # Auth Implementation Checklist
 
 - [x] `prompts/auth-01-pom-dependencies.md`
-- [ ] `prompts/auth-02-yml-config.md`
+- [x] `prompts/auth-02-yml-config.md`
 - [ ] `prompts/auth-03-v4-migration.md`
 - [ ] `prompts/auth-04-user-entity.md`
 - [ ] `prompts/auth-05-jwt-security.md`

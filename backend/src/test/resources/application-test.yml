@@ -16,3 +16,10 @@ management:
   endpoint:
     health:
       show-details: always
+
+jwt:
+  secret: test-secret-key-that-is-at-least-32-characters
+  expiry-ms: 3600000
+
+cors:
+  allowed-origin: http://localhost:5173

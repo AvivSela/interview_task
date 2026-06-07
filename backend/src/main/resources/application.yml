@@ -40,3 +40,10 @@ management:
 geo:
   db:
     path: ${GEO_DB_PATH:}
+
+jwt:
+  secret: ${JWT_SECRET}
+  expiry-ms: ${JWT_EXPIRY_MS:86400000}
+
+cors:
+  allowed-origin: ${CORS_ALLOWED_ORIGIN:http://localhost:5173}
