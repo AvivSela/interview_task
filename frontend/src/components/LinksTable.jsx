@@ -16,7 +16,7 @@ function TagBadge({ tag, active, onClick }) {
   );
 }
 
-export default function LinksTable({ links, onEdit, onDelete, onViewStats, tagFilter, onTagFilter }) {
+export default function LinksTable({ links, onEdit, onDelete, onViewStats, tagFilter, onTagFilter, currentUserId }) {
   const [openQr, setOpenQr] = useState(null);
   const qrRefs = useRef({});
 
@@ -91,18 +91,22 @@ export default function LinksTable({ links, onEdit, onDelete, onViewStats, tagFi
                     >
                       Stats
                     </button>
-                    <button
-                      onClick={() => onEdit(link)}
-                      className="text-xs text-yellow-600 hover:underline"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => onDelete(link.id)}
-                      className="text-xs text-red-500 hover:underline"
-                    >
-                      Delete
-                    </button>
+                    {link.ownerId === currentUserId && (
+                      <>
+                        <button
+                          onClick={() => onEdit(link)}
+                          className="text-xs text-yellow-600 hover:underline"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => onDelete(link.id)}
+                          className="text-xs text-red-600 hover:underline"
+                        >
+                          Delete
+                        </button>
+                      </>
+                    )}
                     <button
                       ref={(el) => { qrRef.current = el; }}
                       onClick={() => setOpenQr({ shortCode: link.shortCode, triggerRef: qrRef })}

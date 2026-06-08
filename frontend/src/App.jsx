@@ -6,7 +6,9 @@ import AnalyticsPanel from './components/AnalyticsPanel';
 import LinkExpired from './components/LinkExpired';
 import NotFound from './components/NotFound';
 import Footer from './components/Footer';
-import { getLinks, deleteLink } from './api';
+import { getLinks, deleteLink, logout, currentUserId } from './api';
+import LoginForm from './components/LoginForm';
+import RegisterForm from './components/RegisterForm';
 
 export default function App() {
   const [links, setLinks] = useState([]);
@@ -40,8 +42,16 @@ export default function App() {
 
   const dashboard = (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-blue-600 text-white px-6 py-4 shadow">
+      <header className="bg-blue-600 text-white px-6 py-4 shadow flex items-center">
         <h1 className="text-2xl font-bold">URL Shortener</h1>
+        {localStorage.getItem('token') && (
+          <button
+            onClick={logout}
+            className="ml-auto text-sm bg-white text-blue-600 px-3 py-1 rounded hover:bg-blue-50"
+          >
+            Log out
+          </button>
+        )}
       </header>
 
       <main className="max-w-6xl mx-auto px-4 py-6">
@@ -61,6 +71,7 @@ export default function App() {
             onViewStats={setAnalyticsShortCode}
             tagFilter={tagFilter}
             onTagFilter={setTagFilter}
+            currentUserId={currentUserId()}
           />
         </div>
 
@@ -79,6 +90,8 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={dashboard} />
+        <Route path="/login"    element={<LoginForm />} />
+        <Route path="/register" element={<RegisterForm />} />
         <Route path="/link-expired" element={<LinkExpired />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
