@@ -13,7 +13,7 @@
 - [x] `prompts/auth-11-link-controller.md`
 - [x] `prompts/auth-12-run-tests.md`
 - [x] `prompts/auth-13-auth-controller-test.md`
-- [ ] `prompts/auth-14-link-auth-test.md`
+- [x] `prompts/auth-14-link-auth-test.md`
 - [ ] `prompts/auth-15-link-controller-test-update.md`
 - [ ] `prompts/auth-16-frontend-api.md`
 - [ ] `prompts/auth-17-frontend-auth-forms.md`
