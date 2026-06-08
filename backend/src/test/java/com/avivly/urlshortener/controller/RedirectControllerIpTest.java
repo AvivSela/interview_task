@@ -1,15 +1,15 @@
 package com.avivly.urlshortener.controller;
 
 import com.avivly.urlshortener.model.ShortLink;
+import com.avivly.urlshortener.security.JwtAuthenticationFilter;
 import com.avivly.urlshortener.service.AnalyticsService;
 import com.avivly.urlshortener.service.LinkService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
@@ -18,11 +18,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(RedirectController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class RedirectControllerIpTest {
 
     @Autowired MockMvc mvc;
     @MockBean  LinkService linkService;
     @MockBean  AnalyticsService analyticsService;
+    @MockBean  JwtAuthenticationFilter jwtAuthenticationFilter;
 
     private ShortLink activeLink() {
         return ShortLink.builder()

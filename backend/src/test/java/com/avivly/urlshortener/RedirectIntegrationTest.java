@@ -4,10 +4,13 @@ import com.avivly.urlshortener.dto.CreateLinkRequest;
 import com.avivly.urlshortener.dto.UpdateLinkRequest;
 import com.avivly.urlshortener.model.ClickAnalytics;
 import com.avivly.urlshortener.model.ShortLink;
+import com.avivly.urlshortener.model.User;
 import com.avivly.urlshortener.repository.ClickAnalyticsRepository;
 import com.avivly.urlshortener.repository.ShortLinkRepository;
+import com.avivly.urlshortener.repository.UserRepository;
 import com.avivly.urlshortener.service.LinkService;
 import org.awaitility.Awaitility;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,6 +45,23 @@ class RedirectIntegrationTest {
     @Autowired
     private ShortLinkRepository shortLinkRepo;
 
+    @Autowired
+    private UserRepository userRepo;
+
+    private Long testUserId;
+
+    @BeforeEach
+    void setUpUser() {
+        User user = userRepo.findByEmail("redirect-test@test.com").orElseGet(() -> {
+            User u = User.builder()
+                .email("redirect-test@test.com")
+                .passwordHash("noop")
+                .build();
+            return userRepo.save(u);
+        });
+        testUserId = user.getId();
+    }
+
     private String url(String path) {
         return "http://localhost:" + port + path;
     }
@@ -49,7 +69,7 @@ class RedirectIntegrationTest {
     @Test
     void happyPath_redirectsToOriginalUrl() {
         ShortLink link = linkService.create(new CreateLinkRequest(
-            "https://example.com/happy", null, null, null, null, null, null));
+            "https://example.com/happy", null, null, null, null, null, null), testUserId);
 
         ResponseEntity<Void> response = restTemplate.getForEntity(
             url("/" + link.getShortCode()), Void.class);
@@ -63,7 +83,7 @@ class RedirectIntegrationTest {
     void expiredLink_redirectsToLinkExpired() {
         ShortLink link = linkService.create(new CreateLinkRequest(
             "https://example.com/expired", null, null, null, null,
-            LocalDateTime.now().minusSeconds(1), null));
+            LocalDateTime.now().minusSeconds(1), null), testUserId);
 
         ResponseEntity<Void> response = restTemplate.getForEntity(
             url("/" + link.getShortCode()), Void.class);
@@ -75,7 +95,7 @@ class RedirectIntegrationTest {
     @Test
     void clickExhausted_secondRequestRedirectsToLinkExpired() {
         ShortLink link = linkService.create(new CreateLinkRequest(
-            "https://example.com/limited", null, null, null, 1, null, null));
+            "https://example.com/limited", null, null, null, 1, null, null), testUserId);
 
         restTemplate.getForEntity(url("/" + link.getShortCode()), Void.class);
 
@@ -89,7 +109,7 @@ class RedirectIntegrationTest {
     @Test
     void clickExhausted_exactLimitAllowedThenBlocked() {
         ShortLink link = linkService.create(new CreateLinkRequest(
-            "https://example.com/limited3", null, null, null, 3, null, null));
+            "https://example.com/limited3", null, null, null, 3, null, null), testUserId);
 
         for (int i = 0; i < 3; i++) {
             ResponseEntity<Void> response = restTemplate.getForEntity(
@@ -114,7 +134,7 @@ class RedirectIntegrationTest {
     @Test
     void sequential_shortCodeIsBase62EncodingOfId() {
         ShortLink link = linkService.create(new CreateLinkRequest(
-            "https://example.com/seq1", null, "SEQUENTIAL", null, null, null, null));
+            "https://example.com/seq1", null, "SEQUENTIAL", null, null, null, null), testUserId);
 
         assertThat(link.getShortCode()).isNotNull();
         assertThat(link.getShortCode()).matches("^[a-zA-Z0-9]+$");
@@ -125,9 +145,9 @@ class RedirectIntegrationTest {
     @Test
     void sequential_twoLinksGetDifferentCodes() {
         ShortLink first = linkService.create(new CreateLinkRequest(
-            "https://example.com/seq2a", null, "SEQUENTIAL", null, null, null, null));
+            "https://example.com/seq2a", null, "SEQUENTIAL", null, null, null, null), testUserId);
         ShortLink second = linkService.create(new CreateLinkRequest(
-            "https://example.com/seq2b", null, "SEQUENTIAL", null, null, null, null));
+            "https://example.com/seq2b", null, "SEQUENTIAL", null, null, null, null), testUserId);
 
         assertThat(first.getShortCode()).isNotEqualTo(second.getShortCode());
     }
@@ -135,7 +155,7 @@ class RedirectIntegrationTest {
     @Test
     void sequential_redirectWorks() {
         ShortLink link = linkService.create(new CreateLinkRequest(
-            "https://example.com/seq3", null, "SEQUENTIAL", null, null, null, null));
+            "https://example.com/seq3", null, "SEQUENTIAL", null, null, null, null), testUserId);
 
         ResponseEntity<Void> response = restTemplate.getForEntity(
             url("/" + link.getShortCode()), Void.class);
@@ -148,7 +168,7 @@ class RedirectIntegrationTest {
     @Test
     void redirect_persistsClickAnalyticsRow() {
         ShortLink link = linkService.create(new CreateLinkRequest(
-            "https://example.com/track1", null, null, null, null, null, null));
+            "https://example.com/track1", null, null, null, null, null, null), testUserId);
 
         restTemplate.getForEntity(url("/" + link.getShortCode()), Void.class);
 
@@ -165,7 +185,7 @@ class RedirectIntegrationTest {
     @Test
     void redirect_incrementsTotalClicks() {
         ShortLink link = linkService.create(new CreateLinkRequest(
-            "https://example.com/track2", null, null, null, null, null, null));
+            "https://example.com/track2", null, null, null, null, null, null), testUserId);
 
         restTemplate.getForEntity(url("/" + link.getShortCode()), Void.class);
 
@@ -176,9 +196,9 @@ class RedirectIntegrationTest {
     @Test
     void inactiveLink_redirectsToLinkExpired() {
         ShortLink link = linkService.create(new CreateLinkRequest(
-            "https://example.com/inactive", null, null, null, null, null, null));
+            "https://example.com/inactive", null, null, null, null, null, null), testUserId);
         linkService.update(link.getId(),
-            new UpdateLinkRequest(null, false, null, null, null));
+            new UpdateLinkRequest(null, false, null, null, null), testUserId);
 
         ResponseEntity<Void> response = restTemplate.getForEntity(
             url("/" + link.getShortCode()), Void.class);

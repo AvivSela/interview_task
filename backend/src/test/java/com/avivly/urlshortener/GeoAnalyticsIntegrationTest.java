@@ -4,7 +4,9 @@ import com.avivly.urlshortener.dto.CreateLinkRequest;
 import com.avivly.urlshortener.model.ClickAnalytics;
 import com.avivly.urlshortener.model.GeoStatus;
 import com.avivly.urlshortener.model.ShortLink;
+import com.avivly.urlshortener.model.User;
 import com.avivly.urlshortener.repository.ClickAnalyticsRepository;
+import com.avivly.urlshortener.repository.UserRepository;
 import com.avivly.urlshortener.service.LinkService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,13 +34,21 @@ class GeoAnalyticsIntegrationTest {
     @Autowired TestRestTemplate rest;
     @Autowired LinkService linkService;
     @Autowired ClickAnalyticsRepository clickRepo;
+    @Autowired UserRepository userRepo;
 
     private ShortLink testLink;
 
     @BeforeEach
     void setUp() {
+        User user = userRepo.findByEmail("geo-test@test.com").orElseGet(() -> {
+            User u = User.builder()
+                .email("geo-test@test.com")
+                .passwordHash("noop")
+                .build();
+            return userRepo.save(u);
+        });
         testLink = linkService.create(new CreateLinkRequest(
-            "https://example.com/geo-test", null, null, null, null, null, null));
+            "https://example.com/geo-test", null, null, null, null, null, null), user.getId());
     }
 
     @Test

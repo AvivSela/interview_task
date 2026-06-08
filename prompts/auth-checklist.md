@@ -11,7 +11,7 @@
 - [x] `prompts/auth-09-link-response-shortlink.md`
 - [x] `prompts/auth-10-link-service.md`
 - [x] `prompts/auth-11-link-controller.md`
-- [ ] `prompts/auth-12-run-tests.md`
+- [x] `prompts/auth-12-run-tests.md`
 - [ ] `prompts/auth-13-auth-controller-test.md`
 - [ ] `prompts/auth-14-link-auth-test.md`
 - [ ] `prompts/auth-15-link-controller-test-update.md`
