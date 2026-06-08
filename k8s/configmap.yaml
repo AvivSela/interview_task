@@ -32,6 +32,14 @@ data:
                 proxy_pass http://frontend:80;
             }
 
+            location ^~ /login {
+                proxy_pass http://frontend:80;
+            }
+
+            location ^~ /register {
+                proxy_pass http://frontend:80;
+            }
+
             location ~ ^/[A-Za-z0-9_-]+ {
                 limit_req zone=redirects burst=5 nodelay;
                 proxy_pass http://backend:8080;

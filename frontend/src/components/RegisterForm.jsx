@@ -13,6 +13,10 @@ export default function RegisterForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters');
+      return;
+    }
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
@@ -26,6 +30,8 @@ export default function RegisterForm() {
     } catch (err) {
       if (err.response?.status === 409) {
         setError('Email is already taken');
+      } else if (err.response?.status === 400) {
+        setError('Invalid email or password (minimum 8 characters)');
       } else {
         setError('Something went wrong.');
       }
