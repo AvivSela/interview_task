@@ -38,6 +38,10 @@ public class ShortLink {
 
     private String tags;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User owner;
+
     @Column(updatable = false)
     private LocalDateTime createdAt;
 

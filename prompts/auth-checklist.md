@@ -8,7 +8,7 @@
 - [x] `prompts/auth-06-auth-dtos-service.md`
 - [x] `prompts/auth-07-auth-controller-security-config.md`
 - [x] `prompts/auth-08-application-bootstrap.md`
-- [ ] `prompts/auth-09-link-response-shortlink.md`
+- [x] `prompts/auth-09-link-response-shortlink.md`
 - [ ] `prompts/auth-10-link-service.md`
 - [ ] `prompts/auth-11-link-controller.md`
 - [ ] `prompts/auth-12-run-tests.md`
