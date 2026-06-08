@@ -16,6 +16,6 @@
 - [x] `prompts/auth-14-link-auth-test.md`
 - [x] `prompts/auth-15-link-controller-test-update.md`
 - [x] `prompts/auth-16-frontend-api.md`
-- [ ] `prompts/auth-17-frontend-auth-forms.md`
+- [x] `prompts/auth-17-frontend-auth-forms.md`
 - [ ] `prompts/auth-18-frontend-app-linkstable.md`
 - [ ] `prompts/auth-19-frontend-tests.md`
