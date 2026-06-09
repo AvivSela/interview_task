@@ -80,7 +80,7 @@ export default function LinkForm({ onCreated, editTarget, onUpdated, onCancel })
         await updateLink(editTarget.id, { ...payload, shortCode: customCode });
         onUpdated();
       } else {
-        await createLink({ ...payload, customAlias: customCode || undefined });
+        const res = await createLink({ ...payload, customAlias: customCode || undefined });
         setOriginalUrl('');
         setCustomCode('');
         setTags('');
@@ -88,7 +88,7 @@ export default function LinkForm({ onCreated, editTarget, onUpdated, onCancel })
         setExpiresAt('');
         setStrategy('RANDOM_BASE62');
         setAllStrategyParams({});
-        onCreated();
+        onCreated(res.data);
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Something went wrong.');

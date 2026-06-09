@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
+import LandingPage from './components/LandingPage';
 import LinkForm from './components/LinkForm';
 import LinksTable from './components/LinksTable';
 import AnalyticsPanel from './components/AnalyticsPanel';
@@ -8,7 +9,6 @@ import LinkExpired from './components/LinkExpired';
 import NotFound from './components/NotFound';
 import Footer from './components/Footer';
 import { getLinks, deleteLink, logout, currentUserId } from './api';
-import LoginForm from './components/LoginForm';
 import RegisterForm from './components/RegisterForm';
 
 export default function App() {
@@ -29,7 +29,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    fetchLinks();
+    if (localStorage.getItem('token')) fetchLinks();
   }, [fetchLinks]);
 
   const handleDelete = async (id) => {
@@ -90,10 +90,11 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LandingPage />} />
         <Route element={<ProtectedRoute />}>
-          <Route path="/" element={dashboard} />
+          <Route path="/dashboard" element={dashboard} />
         </Route>
-        <Route path="/login"    element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/link-expired" element={<LinkExpired />} />
         <Route path="*" element={<NotFound />} />

@@ -26,7 +26,7 @@ export default function RegisterForm() {
       const res = await register({ email, password });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('email', email);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err) {
       if (err.response?.status === 409) {
         setError('Email is already taken');
@@ -41,9 +41,10 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="bg-white rounded-xl shadow p-8 w-full max-w-sm">
-        <h2 className="text-xl font-semibold mb-6 text-center">Create an account</h2>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+      <div className="bg-white rounded-2xl shadow-md p-8 w-full max-w-sm">
+        <h2 className="text-xl font-semibold mb-1 text-center">Create an account</h2>
+        <p className="text-sm text-center text-gray-500 mb-6">Track and manage your short links.</p>
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <label className="flex flex-col gap-1 text-sm font-medium text-gray-700">
             Email
@@ -93,7 +94,7 @@ export default function RegisterForm() {
         <p className="text-sm text-center text-gray-500 mt-4">
           Already have an account?{' '}
           <button
-            onClick={() => navigate('/login')}
+            onClick={() => navigate('/')}
             className="text-blue-600 hover:underline"
           >
             Log in

@@ -1,6 +1,7 @@
 package com.avivly.urlshortener.service;
 
 import com.avivly.urlshortener.dto.CreateLinkRequest;
+import com.avivly.urlshortener.dto.GuestLinkRequest;
 import com.avivly.urlshortener.dto.UpdateLinkRequest;
 import com.avivly.urlshortener.model.ShortLink;
 import com.avivly.urlshortener.model.User;
@@ -63,9 +64,11 @@ public class LinkService {
             .tags(req.tags())
             .build();
 
-        User owner = userRepo.findById(callerId)
-            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
-        partialEntity.setOwner(owner);
+        if (callerId != null) {
+            User owner = userRepo.findById(callerId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+            partialEntity.setOwner(owner);
+        }
 
         if (req.customAlias() != null && !req.customAlias().isBlank()) {
             String code = req.customAlias();
@@ -98,12 +101,37 @@ public class LinkService {
     }
 
     @Transactional
+    public ShortLink createGuest(GuestLinkRequest req) {
+        String originalUrl = sanitizeUrl(req.originalUrl());
+        ShortLink entity = ShortLink.builder()
+            .originalUrl(originalUrl)
+            .strategy(StrategyType.RANDOM_BASE62.name())
+            .build();
+
+        if (req.customAlias() != null && !req.customAlias().isBlank()) {
+            String code = req.customAlias();
+            if (repo.findByShortCode(code).isPresent()) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Short code already taken: " + code);
+            }
+            entity.setShortCode(code);
+            return repo.save(entity);
+        }
+
+        String code = strategyRegistry.validateAndGenerate(StrategyType.RANDOM_BASE62, originalUrl, null, null);
+        if (repo.findByShortCode(code).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Short code already taken: " + code);
+        }
+        entity.setShortCode(code);
+        return repo.save(entity);
+    }
+
+    @Transactional
     @CacheEvict(value = "shortLinks", key = "#result.shortCode")
     public ShortLink update(Long id, UpdateLinkRequest req, Long callerId) {
         ShortLink link = repo.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Link not found: " + id));
 
-        if (!link.getOwner().getId().equals(callerId)) {
+        if (link.getOwner() == null || !link.getOwner().getId().equals(callerId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not the owner");
         }
 
@@ -121,7 +149,7 @@ public class LinkService {
         ShortLink link = repo.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Link not found: " + id));
 
-        if (!link.getOwner().getId().equals(callerId)) {
+        if (link.getOwner() == null || !link.getOwner().getId().equals(callerId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not the owner");
         }
 

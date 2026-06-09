@@ -44,6 +44,7 @@ public class SecurityConfig {
                 .requestMatchers(GET,    "/api/r/**").permitAll()
                 .requestMatchers(GET,    "/{shortCode}").permitAll()
                 .requestMatchers(GET,    "/actuator/**").permitAll()
+                .requestMatchers(POST,   "/api/links/guest").permitAll()
                 .requestMatchers(POST,   "/api/links").authenticated()
                 .requestMatchers(PUT,    "/api/links/**").authenticated()
                 .requestMatchers(DELETE, "/api/links/**").authenticated()

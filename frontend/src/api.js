@@ -12,9 +12,9 @@ api.interceptors.response.use(
   res => res,
   err => {
     const url = err.config?.url ?? '';
-    if (err.response?.status === 401 && !url.startsWith('/auth/')) {
+    if (err.response?.status === 401 && !url.startsWith('/auth/') && err.config?.headers?.Authorization) {
       localStorage.removeItem('token');
-      window.location.href = '/login';
+      window.location.href = '/';
     }
     return Promise.reject(err);
   }
@@ -26,7 +26,7 @@ export const login    = (data) => api.post('/auth/login', data);
 export const logout = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('email');
-  window.location.href = '/login';
+  window.location.href = '/';
 };
 
 export const currentUserId = () => {
@@ -38,6 +38,8 @@ export const currentUserId = () => {
     return null;
   }
 };
+
+export const createGuestLink = (data) => api.post('/links/guest', data);
 
 export const getLinks = () => api.get('/links');
 export const createLink = (data) => api.post('/links', data);

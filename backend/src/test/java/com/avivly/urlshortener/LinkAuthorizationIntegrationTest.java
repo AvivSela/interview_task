@@ -1,6 +1,7 @@
 package com.avivly.urlshortener;
 
 import com.avivly.urlshortener.dto.CreateLinkRequest;
+import com.avivly.urlshortener.dto.GuestLinkRequest;
 import com.avivly.urlshortener.dto.LinkResponse;
 import com.avivly.urlshortener.dto.UpdateLinkRequest;
 import com.avivly.urlshortener.support.AuthTestSupport;
@@ -18,11 +19,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 class LinkAuthorizationIntegrationTest extends AuthTestSupport {
 
     @Test
-    void createLink_withoutToken_returns401() {
-        CreateLinkRequest req = new CreateLinkRequest(
-            "https://example.com/unauth", null, null, null, null, null, null);
-        ResponseEntity<String> res = restTemplate.postForEntity(url("/api/links"), req, String.class);
-        assertThat(res.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    void createLink_withoutToken_returns201WithNullOwner() {
+        GuestLinkRequest req = new GuestLinkRequest("https://example.com/anon", null);
+        ResponseEntity<LinkResponse> res = restTemplate.postForEntity(url("/api/links/guest"), req, LinkResponse.class);
+        assertThat(res.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(res.getBody().ownerId()).isNull();
+        assertThat(res.getBody().shortCode()).isNotBlank();
     }
 
     @Test

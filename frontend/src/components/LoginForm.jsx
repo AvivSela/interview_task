@@ -10,7 +10,7 @@ export default function LoginForm() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem('token')) navigate('/');
+    if (localStorage.getItem('token')) navigate('/dashboard');
   }, [navigate]);
 
   const handleSubmit = async (e) => {
@@ -21,7 +21,7 @@ export default function LoginForm() {
       const res = await login({ email, password });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('email', email);
-      navigate('/');
+      navigate('/dashboard');
     } catch (err) {
       if (err.response?.status === 401) {
         setError('Invalid email or password');

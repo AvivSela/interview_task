@@ -2,6 +2,7 @@ package com.avivly.urlshortener.controller;
 
 import com.avivly.urlshortener.dto.AnalyticsResponse;
 import com.avivly.urlshortener.dto.CreateLinkRequest;
+import com.avivly.urlshortener.dto.GuestLinkRequest;
 import com.avivly.urlshortener.dto.LinkResponse;
 import com.avivly.urlshortener.dto.UpdateLinkRequest;
 import com.avivly.urlshortener.service.AnalyticsService;
@@ -32,10 +33,22 @@ public class LinkController {
         return userId;
     }
 
+    private Long currentUserIdOrNull() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.getPrincipal() instanceof Long userId) return userId;
+        return null;
+    }
+
+    @PostMapping("/guest")
+    public ResponseEntity<LinkResponse> createGuest(@Valid @RequestBody GuestLinkRequest req) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(LinkResponse.from(linkService.createGuest(req)));
+    }
+
     @PostMapping
     public ResponseEntity<LinkResponse> create(@Valid @RequestBody CreateLinkRequest req) {
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(LinkResponse.from(linkService.create(req, currentUserId())));
+            .body(LinkResponse.from(linkService.create(req, currentUserIdOrNull())));
     }
 
     @GetMapping
@@ -58,7 +71,7 @@ public class LinkController {
     public AnalyticsResponse getAnalytics(@PathVariable String shortCode) {
         Long callerId = currentUserId();
         var link = linkService.findByShortCode(shortCode);
-        if (link == null || !link.getOwner().getId().equals(callerId)) {
+        if (link == null || link.getOwner() == null || !link.getOwner().getId().equals(callerId)) {
             throw new org.springframework.web.server.ResponseStatusException(
                 org.springframework.http.HttpStatus.FORBIDDEN);
         }
