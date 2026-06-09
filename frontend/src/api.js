@@ -24,9 +24,13 @@ export const register    = (data) => api.post('/auth/register', data);
 export const login       = (data) => api.post('/auth/login', data);
 export const verifyToken = ()     => api.get('/auth/me');
 
-export const logout = () => {
+export const clearSession = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('email');
+};
+
+export const logout = () => {
+  clearSession();
   window.location.href = '/';
 };
 

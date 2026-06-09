@@ -112,6 +112,14 @@ class LinkAuthorizationIntegrationTest extends AuthTestSupport {
     }
 
     @Test
+    void createLink_authenticatedEndpoint_withoutToken_returns401() {
+        CreateLinkRequest req = new CreateLinkRequest(
+            "https://example.com/should-be-unauth", null, null, null, null, null, null);
+        ResponseEntity<String> res = restTemplate.postForEntity(url("/api/links"), req, String.class);
+        assertThat(res.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    }
+
+    @Test
     void getLinks_withoutToken_returns401() {
         ResponseEntity<String> res = restTemplate.getForEntity(url("/api/links"), String.class);
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);

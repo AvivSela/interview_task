@@ -110,7 +110,10 @@ public class LinkService {
         ShortLink link = repo.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Link not found: " + id));
 
-        if (link.getOwner() == null || !link.getOwner().getId().equals(callerId)) {
+        if (link.getOwner() == null) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Guest links cannot be updated");
+        }
+        if (!link.getOwner().getId().equals(callerId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not the owner");
         }
 
@@ -128,7 +131,7 @@ public class LinkService {
         ShortLink link = repo.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Link not found: " + id));
 
-        if (link.getOwner() == null || !link.getOwner().getId().equals(callerId)) {
+        if (link.getOwner() != null && !link.getOwner().getId().equals(callerId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Not the owner");
         }
 

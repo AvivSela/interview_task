@@ -64,7 +64,11 @@ public class LinkController {
     public AnalyticsResponse getAnalytics(@PathVariable String shortCode) {
         Long callerId = currentUserId();
         var link = linkService.findByShortCode(shortCode);
-        if (link == null || link.getOwner() == null || !link.getOwner().getId().equals(callerId)) {
+        if (link == null) {
+            throw new org.springframework.web.server.ResponseStatusException(
+                org.springframework.http.HttpStatus.FORBIDDEN);
+        }
+        if (link.getOwner() != null && !link.getOwner().getId().equals(callerId)) {
             throw new org.springframework.web.server.ResponseStatusException(
                 org.springframework.http.HttpStatus.FORBIDDEN);
         }

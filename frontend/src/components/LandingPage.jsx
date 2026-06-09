@@ -1,27 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createGuestLink, login, verifyToken } from '../api';
+import { createGuestLink, login, verifyToken, clearSession } from '../api';
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const [checking, setChecking] = useState(true);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setChecking(false);
-      return;
-    }
-    verifyToken()
-      .then(() => navigate('/dashboard'))
-      .catch(() => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('email');
-        setChecking(false);
-      });
-  }, [navigate]);
-
-  if (checking) return null;
 
   // Anon shortener state
   const [url, setUrl] = useState('');
@@ -35,6 +18,25 @@ export default function LandingPage() {
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
   const [loginLoading, setLoginLoading] = useState(false);
+
+  const copyTimeoutRef = useRef(null);
+  useEffect(() => () => clearTimeout(copyTimeoutRef.current), []);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setChecking(false);
+      return;
+    }
+    verifyToken()
+      .then(() => navigate('/dashboard'))
+      .catch(() => {
+        clearSession();
+        setChecking(false);
+      });
+  }, [navigate]);
+
+  if (checking) return null;
 
   const handleShorten = async (e) => {
     e.preventDefault();
@@ -54,9 +56,10 @@ export default function LandingPage() {
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(result);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    navigator.clipboard.writeText(result)
+      .then(() => setCopied(true))
+      .catch(() => {});
+    copyTimeoutRef.current = setTimeout(() => setCopied(false), 2000);
   };
 
   const handleLogin = async (e) => {
@@ -67,7 +70,7 @@ export default function LandingPage() {
       const res = await login({ email, password });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('email', email);
-      window.location.href = '/dashboard';
+      navigate('/dashboard');
     } catch (err) {
       if (err.response?.status === 401) {
         setLoginError('Invalid email or password');
