@@ -11,7 +11,7 @@ import Footer from './components/Footer';
 import { getLinks, deleteLink, logout, currentUserId } from './api';
 import RegisterForm from './components/RegisterForm';
 
-export default function App() {
+function Dashboard() {
   const [links, setLinks] = useState([]);
   const [editTarget, setEditTarget] = useState(null);
   const [analyticsShortCode, setAnalyticsShortCode] = useState(null);
@@ -29,7 +29,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (localStorage.getItem('token')) fetchLinks();
+    fetchLinks();
   }, [fetchLinks]);
 
   const handleDelete = async (id) => {
@@ -41,18 +41,16 @@ export default function App() {
     }
   };
 
-  const dashboard = (
+  return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-blue-600 text-white px-6 py-4 shadow flex items-center">
         <h1 className="text-2xl font-bold">URL Shortener</h1>
-        {localStorage.getItem('token') && (
-          <button
-            onClick={logout}
-            className="ml-auto text-sm bg-white text-blue-600 px-3 py-1 rounded hover:bg-blue-50"
-          >
-            Log out
-          </button>
-        )}
+        <button
+          onClick={logout}
+          className="ml-auto text-sm bg-white text-blue-600 px-3 py-1 rounded hover:bg-blue-50"
+        >
+          Log out
+        </button>
       </header>
 
       <main className="max-w-6xl mx-auto px-4 py-6">
@@ -86,14 +84,16 @@ export default function App() {
       <Footer />
     </div>
   );
+}
 
+export default function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LandingPage />} />
         <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard" element={dashboard} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Route>
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/link-expired" element={<LinkExpired />} />

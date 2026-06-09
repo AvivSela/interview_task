@@ -7,9 +7,13 @@ export default function AnalyticsPanel({ shortCode, onClose }) {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    setData(null);
+    setError('');
+    let cancelled = false;
     getAnalytics(shortCode)
-      .then((res) => setData(res.data))
-      .catch(() => setError('Failed to load analytics.'));
+      .then((res) => { if (!cancelled) setData(res.data); })
+      .catch(() => { if (!cancelled) setError('Failed to load analytics.'); });
+    return () => { cancelled = true; };
   }, [shortCode]);
 
   const geoEmpty =
