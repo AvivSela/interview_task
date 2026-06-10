@@ -112,6 +112,18 @@ class LinkAuthorizationIntegrationTest extends AuthTestSupport {
     }
 
     @Test
+    void deleteGuestLink_byAuthenticatedUser_returns403() {
+        CreateLinkRequest req = new CreateLinkRequest("https://example.com/guest-delete-attempt", null, null, null, null, null, null);
+        LinkResponse guestLink = restTemplate.postForEntity(url("/api/links/guest"), req, LinkResponse.class).getBody();
+
+        String token = registerAndGetToken(UUID.randomUUID() + "@example.com");
+        ResponseEntity<String> res = restTemplate.exchange(
+            url("/api/links/" + guestLink.id()), HttpMethod.DELETE,
+            new HttpEntity<>(bearerHeaders(token)), String.class);
+        assertThat(res.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
+    }
+
+    @Test
     void createLink_authenticatedEndpoint_withoutToken_returns401() {
         CreateLinkRequest req = new CreateLinkRequest(
             "https://example.com/should-be-unauth", null, null, null, null, null, null);
